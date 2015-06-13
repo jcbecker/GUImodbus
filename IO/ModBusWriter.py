@@ -2,11 +2,12 @@ import serial
 import time
 
 class ModBusWriter:
-	def __init__(self, outra):
-		self.outra = outra
 		
 	def write(self, t):
-		teste = serial.Serial(port = "/dev/pts/3", baudrate = 9600)
+		confFile = open("../Conf/conf.txt","r")
+		wport = confFile.readline().split('[')[1].split(']')[0]
+
+		teste = serial.Serial(port = wport, baudrate = 9600)
 			
 		try:
 			teste.write(t + b'\n'.encode())				
@@ -14,12 +15,7 @@ class ModBusWriter:
 			pass
 
 
-objeto = ModBusWriter(None)
+objeto = ModBusWriter()
 while True:
 	m = raw_input("texto: ")
 	objeto.write(m)
-
-	
-	
-	
-	
