@@ -1,7 +1,7 @@
 import serial
 import time
 
-class ModBusIO:
+class ModBusWriter:
 	def __init__(self, outra):
 		self.outra = outra
 		
@@ -14,7 +14,7 @@ class ModBusIO:
 			pass
 
 
-objeto = ModBusIO(None)
+objeto = ModBusWriter(None)
 while True:
 	m = raw_input("texto: ")
 	objeto.write(m)

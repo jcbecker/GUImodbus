@@ -1,7 +1,7 @@
 import serial
 import time
 
-class ModBusIO:
+class ModBusReader:
 	def __init__(self, outra):
 		self.outra = outra
 		
@@ -24,12 +24,12 @@ class ModBusIO:
 					return word
 		
 			except:
-				print("Deu um exception")
+				print("Exceção de leitura.")
 				pass
 				
 	
 
-objeto = ModBusIO(None)
+objeto = ModBusReader(None)
 while True:
 	l = objeto.read()
 	if l is not None:
