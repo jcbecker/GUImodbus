@@ -1,13 +1,13 @@
 import serial
 import time
 
-class ModBusIO:
+class ModBusReader:
 	def __init__(self, outra):
 		self.outra = outra
 		
 			
 	def read(self):
-		sPort = serial.Serial(port = "/dev/pts/4", baudrate = 9600, timeout = 0.5)
+		sPort = serial.Serial(port = "/dev/pts/3", baudrate = 9600, timeout = 1)
 		
 		word = ""
 		while True:
@@ -29,7 +29,7 @@ class ModBusIO:
 				
 	
 
-objeto = ModBusIO(None)
+objeto = ModBusReader(None)
 while True:
 	l = objeto.read()
 	if l is not None:

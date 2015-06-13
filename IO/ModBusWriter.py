@@ -1,12 +1,12 @@
 import serial
 import time
 
-class ModBusIO:
+class ModBusWriter:
 	def __init__(self, outra):
 		self.outra = outra
 		
 	def write(self, t):
-		teste = serial.Serial(port = "/dev/pts/3", baudrate = 9600)
+		teste = serial.Serial(port = "/dev/pts/2", baudrate = 9600)
 			
 		try:
 			teste.write(t + b'\n'.encode())				
@@ -14,7 +14,7 @@ class ModBusIO:
 			pass
 
 
-objeto = ModBusIO(None)
+objeto = ModBusWriter(None)
 while True:
 	m = raw_input("texto: ")
 	objeto.write(m)
