@@ -9,17 +9,18 @@ class ModBusIO:
 	# Funcao para ler da porta serial. Le ate achar um \n e retorna 
 	# a string concatenada caractere a caractere.	
 	def read(self):
-		sPort = serial.Serial(port = "/dev/pts/3", baudrate = 9600 )
+		sPort = serial.Serial(port = "/dev/pts/4", baudrate = 9600, timeout = 0.5)
 		
 		word = ""
 		while True:
 			try:
-				sPort.timeout = 6
+				b = -1
 				b = sPort.read()
 				
-				
-				
 				if b != '\n':
+					if b is "":
+						return
+						
 					word += b
 				else:
 					return word
@@ -30,7 +31,9 @@ class ModBusIO:
 
 objeto = ModBusIO(None)
 while True:
-	print(objeto.read())
+	l = objeto.read()
+	if l is not None:
+		print(l)
 	print("teste:")
 	
 	

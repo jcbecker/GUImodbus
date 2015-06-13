@@ -6,7 +6,7 @@ class ModBusIO:
 		self.outra = outra
 		
 	def write(self, t):
-		teste = serial.Serial(port = "/dev/pts/1", baudrate = 9600)
+		teste = serial.Serial(port = "/dev/pts/3", baudrate = 9600)
 			
 		try:
 			teste.write(t + b'\n'.encode())				
