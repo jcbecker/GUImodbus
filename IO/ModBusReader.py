@@ -5,9 +5,7 @@ class ModBusIO:
 	def __init__(self, outra):
 		self.outra = outra
 		
-		
-	# Funcao para ler da porta serial. Le ate achar um \n e retorna 
-	# a string concatenada caractere a caractere.	
+			
 	def read(self):
 		sPort = serial.Serial(port = "/dev/pts/4", baudrate = 9600, timeout = 0.5)
 		
@@ -28,13 +26,14 @@ class ModBusIO:
 			except:
 				print("Deu um exception")
 				pass
+				
+	
 
 objeto = ModBusIO(None)
 while True:
 	l = objeto.read()
 	if l is not None:
 		print(l)
-	print("teste:")
 	
 	
 	
