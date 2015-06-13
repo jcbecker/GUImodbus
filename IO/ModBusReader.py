@@ -2,12 +2,14 @@ import serial
 import time
 
 class ModBusReader:
-	def __init__(self, outra):
-		self.outra = outra
-		
 			
 	def read(self):
-		sPort = serial.Serial(port = "/dev/pts/3", baudrate = 9600, timeout = 1)
+		
+		confFile = open("../Conf/conf.txt","r")
+		confFile.readline();
+		rport = confFile.readline().split('[')[1].split(']')[0]
+		
+		sPort = serial.Serial(port = rport, baudrate = 9600, timeout = 1)
 		
 		word = ""
 		while True:
@@ -24,12 +26,13 @@ class ModBusReader:
 					return word
 		
 			except:
-				print("Deu um exception")
+				print("Reading error.")
 				pass
 				
 	
 
-objeto = ModBusReader(None)
+objeto = ModBusReader()
+
 while True:
 	l = objeto.read()
 	if l is not None:
