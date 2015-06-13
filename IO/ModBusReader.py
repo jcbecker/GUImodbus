@@ -19,22 +19,28 @@ class ModBusReader:
 				
 				if b != '\n':
 					if b is "":
-						return
+						raise NameError("ReadTimeoutException")
 						
 					word += b
 				else:
 					return word
 		
-			except:
-				print("Reading error.")
-				pass
-				
+			except Exception as e:
+				if e == "ReadTimeoutException":
+					
+					print e
+				#else:
+				#	print "Other read exception."
+						
 	
 
 objeto = ModBusReader()
 
 while True:
-	l = objeto.read()
+	try:
+		l = objeto.read()
+	except("ReadTimeoutException"):
+		print "jhLAJLIHLlllllllll"
 	if l is not None:
 		print(l)
 	
