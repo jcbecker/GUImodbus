@@ -2,10 +2,10 @@
 # para reconhecimento do python, vai ser feito
 # em apenas um arquivo.
 
-from GUImodbus.IO.ModBusReader import ModBusReader
+from ..IO.ModBusReader import ModBusReader
 
 class Temperature:
-	self.reg = {}
+	reg = {}
 	
 	def __init__(self):
 		# numero do registrador de cada local

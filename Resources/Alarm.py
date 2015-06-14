@@ -2,12 +2,12 @@
 # para reconhecimento do python, vai ser feito
 # em apenas um arquivo.
 
-from GUImodbus.IO.ModBusWriter import ModBusWriter
-from GUImodbus.IO.ModBusReader import ModBusReader
+from ..IO.ModBusWriter import ModBusWriter
+from ..IO.ModBusReader import ModBusReader
 
 class Alarm:
 
-	self.monitRegBits = {}
+	monitRegBits = {}
 
 	def __init__(self):		
 		self.monitRegBits['garagem']     = 0
