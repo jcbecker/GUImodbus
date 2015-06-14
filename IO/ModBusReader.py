@@ -26,14 +26,3 @@ class ModBusReader:
 
 			except Exception as e:
 				raise e 
-	
-
-objeto = ModBusReader()
-
-try:
-	l = objeto.read()
-except IOError as iE:
-	if iE.args[0] == "ReadTimeoutException":
-		print "No answer was given."
-	else:
-		print "Unexpected error." + iE.args[0]
