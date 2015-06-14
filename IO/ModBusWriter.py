@@ -1,5 +1,5 @@
-import serial
 import time
+from serial import Serial
 
 class ModBusWriter:
 		
@@ -11,12 +11,5 @@ class ModBusWriter:
 			
 		try:
 			teste.write(t + b'\n'.encode())				
-		except:
-			pass
-
-
-objeto = ModBusWriter()
-
-while True:
-	m = raw_input("texto: ")
-	objeto.write(m)
+		except Exception as e:
+			raise e

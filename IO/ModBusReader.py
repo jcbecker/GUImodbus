@@ -1,5 +1,5 @@
-import serial
 import time
+from serial import Serial
 
 class ModBusReader:
 			
