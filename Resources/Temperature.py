@@ -1,7 +1,3 @@
-# No fim esse comando para adcionar os modulos
-# para reconhecimento do python, vai ser feito
-# em apenas um arquivo.
-
 from ..IO.ModBusReader import ModBusReader
 
 class Temperature:
