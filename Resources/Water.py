@@ -1,13 +1,11 @@
 # No fim esse comando para adcionar os modulos
 # para reconhecimento do python, vai ser feito
 # em apenas um arquivo.
-import sys
-sys.path.append('../IO/')
 
-from ModBusReader import ModBusReader
+from GUImodbus.IO.ModBusReader import ModBusReader
 
 class Water:
-	
+	self.teste = 0
 	def __init__(self):	
 		self.reg = {}	
 

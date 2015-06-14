@@ -1,15 +1,16 @@
 # No fim esse comando para adcionar os modulos
 # para reconhecimento do python, vai ser feito
 # em apenas um arquivo.
-import sys
-sys.path.append('../IO/')
 
-from ModBusReader import ModBusReader
+from GUImodbus.IO.ModBusReader import ModBusReader
 
 class Temperature:
+	self.reg = {}
 	
 	def __init__(self):
-		self.reg = {}
+		# numero do registrador de cada local
+		# cada local ocupa um registrador 
+		# inteiro.
 		self.reg['piscina']  	= 0
 		self.reg['banheira'] 	= 1
 		self.reg['suite'] 		= 2
@@ -25,6 +26,6 @@ class Temperature:
 			# montar a mensagem no protocolo ModBus
 			# e utilizar o ModBusReader para ler a temperatura.
 			# e entao retornar a mesma.
-			print checkReg
+			print(checkReg)
 		else:
 			return None
