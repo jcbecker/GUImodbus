@@ -14,31 +14,26 @@ class ModBusReader:
 		word = ""
 		while True:
 			try:
-				b = -1
 				b = sPort.read()
 				
 				if b != '\n':
 					if b is "":
-						raise ValueError("ReadTimeoutException")
+						raise IOError("ReadTimeoutException")
 						
 					word += b
 				else:
-					return word
-		
+					return word						
+
 			except Exception as e:
-				if e.args[0] == "ReadTimeoutException":
-					print e.args[0]
-				else:
-					print "Other read exception."
-						
+				raise e 
 	
 
 objeto = ModBusReader()
 
-while True:
+try:
 	l = objeto.read()
-	if l is not None:
-		print(l)
-	
-	
-	
+except IOError as iE:
+	if iE.args[0] == "ReadTimeoutException":
+		print "No answer was given."
+	else:
+		print "Unexpected error." + iE.args[0]
