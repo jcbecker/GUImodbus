@@ -1,2 +1,0 @@
-wport = [/dev/pts/2]
-rport = [/dev/pts/3]
