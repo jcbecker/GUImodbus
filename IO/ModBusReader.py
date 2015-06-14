@@ -5,11 +5,11 @@ class ModBusReader:
 			
 	def read(self):
 		
-		confFile = open("../Conf/conf.txt","r")
+		confFile = open("GUImodbus/Conf/conf.txt","r")
 		confFile.readline();
 		rport = confFile.readline().split('[')[1].split(']')[0]
 		
-		sPort = serial.Serial(port = rport, baudrate = 9600, timeout = 1)
+		sPort = Serial(port = rport, baudrate = 9600, timeout = 1)
 		
 		word = ""
 		while True:

@@ -4,7 +4,7 @@ from serial import Serial
 class ModBusWriter:
 		
 	def write(self, t):
-		confFile = open("../Conf/conf.txt","r")
+		confFile = open("GUImodbus/Conf/conf.txt","r")
 		wport = confFile.readline().split('[')[1].split(']')[0]
 
 		teste = serial.Serial(port = wport, baudrate = 9600)
