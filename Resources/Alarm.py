@@ -6,12 +6,15 @@ class Alarm:
 	monitRegBits = {}
 
 	def __init__(self):		
+		self.writer = ModBusWriter()
+		self.reader = ModBusReader()
+		
 		self.monitRegBits['garagem']     = 0
 		self.monitRegBits['piscina']     = 1
 		self.monitRegBits['cozinha']     = 2
 		self.monitRegBits['saladeestar'] = 3
 		self.monitRegBits['saladejogos'] = 4
-		self.monitRegBits['suite'] 		 = 5
+		self.monitRegBits['suite'] 	   = 5
 		self.monitRegBits['dormitorio1'] = 6
 		self.monitRegBits['dormitorio2'] = 7
 
@@ -29,13 +32,16 @@ class Alarm:
 			return None
 
 	def fired( self ):	
-		monitReg = 9
-
+		monitReg = "0009"
+		regNumber = "0001"
+		
+		self.reader.read(monitReg,regNumber)
+		
 		#usar o bit 1 do registrador 9 para
 		#verificar se o alarme esta disparado.	
 
 	def checkONOFF( self ):
-		monitReg = 9
+		pass
 		
 		#usar o bit 0 do registrador 9 para 
 		#verificar se o alarme esta ligado ou desligado.
