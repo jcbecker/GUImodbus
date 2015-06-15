@@ -16,49 +16,49 @@ labelHeight = 0.10*screenHeight
 monitoring = Label(root, text="Monitoramento", bg="white")
 monitoring.place(x=0,y=0,width=screenWidth,height=labelHeight)
 
-wmBtn = Button( root, text = "Água", fg="blue", bg="white")
+wmBtn = Button( root, text = "Água", fg="blue", bg="white", activebackground="white")
 wmBtn.place(x=distBetweenBtnSecLine,
 			y=labelHeight + 5,
 			width=screenWidth*0.20,
 			height=screenHeight*0.10)
 
-amBtn = Button( root, text = "Alarme", fg="red", bg="white")
+amBtn = Button( root, text = "Alarme", fg="red", bg="white", activebackground="white")
 amBtn.place(x = screenWidth*0.20 + distBetweenBtnSecLine*2,
 			y = labelHeight + 5,
 			width= screenWidth*0.20,
 			height= screenHeight*0.10)
 
-imBtn = Button( root, text = "Iluminação", fg="green", bg="white")
+imBtn = Button( root, text = "Iluminação", fg="green", bg="white", activebackground="white")
 imBtn.place(x = screenWidth*0.40 + distBetweenBtnSecLine*3,
 		    y = labelHeight + 5,
 		    width = screenWidth*0.20,
 		    height = screenHeight*0.10)
 
-tmBtn = Button( root, text = "Temperatura", fg="orange", bg="white")
+tmBtn = Button( root, text = "Temperatura", fg="orange", bg="white", activebackground="white")
 tmBtn.place(x = screenWidth*0.60 + distBetweenBtnSecLine*4,
 			y = labelHeight + distBetweenLines,
 			width = screenWidth*0.20,
 			height = screenHeight*0.10)
 
-commands = Label(root, text="Acionamentos", bg="white")
+commands = Label(root, text="Acionamentos", bg="white", activebackground="white")
 commands.place(x = 0,
 			   y = 2*(labelHeight + distBetweenLines),
 			   width = screenWidth,
 			   height = labelHeight)
 
-waBtn = Button( root, text = "Água", fg="blue", bg="white")
+waBtn = Button( root, text = "Água", fg="blue", bg="white", activebackground="white")
 waBtn.place(x = distBetweenBtnFourthLine,
 		    y = 3*(labelHeight + distBetweenLines),
 		    width = screenWidth*0.20,
 		    height = screenWidth*0.10)
 
-aaBtn = Button( root, text = "Alarme", fg="red", bg="white")
+aaBtn = Button( root, text = "Alarme", fg="red", bg="white", activebackground="white")
 aaBtn.place(x = screenWidth*0.2 + distBetweenBtnFourthLine*2,
 		    y = 3*(labelHeight + distBetweenLines),
 		    width = screenWidth*0.20,
 		    height = screenWidth*0.10)
 
-iaBtn = Button( root, text = "Iluminação", fg="green", bg="white")
+iaBtn = Button( root, text = "Iluminação", fg="green", bg="white", activebackground="white")
 iaBtn.place(x = screenWidth*0.4 + distBetweenBtnFourthLine*3,
 		    y = 3*(labelHeight + distBetweenLines),
 		    width = screenWidth*0.20,
