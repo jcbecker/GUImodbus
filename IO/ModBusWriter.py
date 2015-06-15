@@ -7,7 +7,7 @@ class ModBusWriter:
 		confFile = open("GUImodbus/Conf/conf.txt","r")
 		wport = confFile.readline().split('[')[1].split(']')[0]
 
-		teste = serial.Serial(port = wport, baudrate = 9600)
+		teste = Serial(port = wport, baudrate = 9600)
 			
 		try:
 			teste.write(t + b'\n'.encode())				

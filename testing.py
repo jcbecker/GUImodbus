@@ -1,7 +1,8 @@
-
 from Resources.Water import Water
+from IO.ModBusWriter import ModBusWriter
 
-w = Water()
-#vai derrubar o programa porque
-#nao ta segurando a excecao ReadtimeOutException
-w.testar()
+writer = ModBusWriter()
+
+while True:
+	ask = raw_input("Digite uma string: ")
+	writer.write(ask)
