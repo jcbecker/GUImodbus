@@ -12,7 +12,7 @@ class ModBusReader(ModBusIO):
 	def _checkSum(self, reg, regNumber):
 		cs = int( self.slaveAddress, 16 ) + int( self.function, 16 ) 
 		cs = cs + int( reg, 16 ) + int( regNumber, 16 )
-		return hex(cs)[2:]
+		return hex( 255 - cs + 1 )[2:]
 
 	def read(self, reg, regNumber ):
 		
