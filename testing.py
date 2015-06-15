@@ -1,8 +1,9 @@
 from Resources.Water import Water
+from Resources.Alarm import Alarm
 from IO.ModBusWriter import ModBusWriter
+from IO.ModBusReader import ModBusReader
 
-writer = ModBusWriter()
+alarm = Alarm()
 
-while True:
-	ask = raw_input("Digite uma string: ")
-	writer.write(ask)
+alarm.fired()
+#mbw
