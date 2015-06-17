@@ -14,32 +14,35 @@ class ModBusReader(ModBusIO):
 		cs = cs + int( reg, 16 ) + int( regNumber, 16 )
 		return hex( 255 - cs + 1 )[2:]
 
-	def read(self, reg, regNumber ):
+	def read(self, reg, regNumber, porta):
 		
-		confFile = open("GUImodbus/Conf/conf.txt","r")
-		confFile.readline();
-		rport = confFile.readline().split('[')[1].split(']')[0]
-		
-		sPort = Serial(port = rport, baudrate = 9600, timeout = 3)
+		###
+		#confFile = open("GUImodbus/Conf/conf.txt","r")
+		#confFile.readline();
+		#rport = confFile.readline().split('[')[1].split(']')[0]
+		#sPort = Serial(port = rport, baudrate = 9600, timeout = 3)
+		###
 		
 		query = self.iniMSG + self.slaveAddress + self.function
 		query = query + reg + regNumber + self._checkSum(reg,regNumber) + self.endMSG
 		
 		print query
-		
-		self.writer.write(query)
+		#modularizar isso para todas as classes.
+		self.writer.write("3A33413033303030303030303942410D0A".decode("hex"), porta)
+		print "sent: " + "3A33413033303030303030303942410D0A".decode("hex")
 		
 		word = ""
 		while True:
 			try:
-				b = sPort.read()
+				b = porta.read()
 				
-				if b != '\n':
+				if not "0d0a".decode('hex') in word:
 					if b is "":
 						raise IOError("ReadTimeoutException")
 						
 					word += b
 				else:
+					print "received: " + word
 					return word						
 
 			except Exception as e:

@@ -8,19 +8,24 @@ class ModBusWriter(ModBusIO):
 		self.function = "06"
 
 	def _checkSum(self, reg, regNumber):
-		cs = int( self.slaveAddress, 16 ) + int( self.function, 16 ) 
-		cs = cs + int( reg, 16 ) + int( regNumber, 16 )
+		cs = int(self.slaveAddress, 16) + int(self.function, 16) 
+		cs = cs + int(reg, 16) + int(regNumber, 16)
 		return hex( 255 - cs + 1 )[2:]
 
-	def write(self, t):
-		confFile = open("GUImodbus/Conf/conf.txt","r")
-		wport = confFile.readline().split('[')[1].split(']')[0]
-
+	def write(self, t, porta):
+		
+		###
+		#confFile = open("GUImodbus/Conf/conf.txt","r")
+		#wport = confFile.readline().split('[')[1].split(']')[0]
+		###
+		
 		msg = self.iniMSG + self.slaveAddress + self.function
-
-		sComm = Serial(port = wport, baudrate = 9600)		
+		
+		###
+		#sComm = Serial(port = wport, baudrate = 9600)		
+		###
 		
 		try:
-			sComm.write( t)				
+			porta.write(t)				
 		except Exception as e:
 			raise e
