@@ -7,7 +7,7 @@ class ModBusReader(ModBusIO):
 
 	def __init__(self):
 		
-		self.function = "03"
+		self.function = "3033"
 		self.writer = ModBusWriter()
 
 	def _checkSum(self, reg, regNumber):
@@ -29,7 +29,7 @@ class ModBusReader(ModBusIO):
 		
 		print query
 		
-		self.writer.write("3A33413033303030303030303942410D0A".decode("hex"))
+		self.writer.write("3A33413033303030393030303042410D0A".decode("hex"))
 		print "sent: " +  "3A33413033303030303030303942410D0A".decode("hex")
 		
 		word = ""
