@@ -7,11 +7,6 @@ class ModBusWriter(ModBusIO):
 	def __init__(self):
 		self.function = "06"
 
-	def _checkSum(self, reg, regNumber):
-		cs = int(self.slaveAddress, 16) + int(self.function, 16) 
-		cs = cs + int(reg, 16) + int(regNumber, 16)
-		return hex( 255 - cs + 1 )[2:]
-
 	#so faz uma pergunta para o escravo
 	#quem usa este metodo geralmente
 	#e a classe de leitura.
@@ -24,4 +19,7 @@ class ModBusWriter(ModBusIO):
 
 	#implementar
 	def write(self,reg,bit,data):
-		pass
+		msg = self.iniMSG + self.slaveAddress + self.function + reg + data
+		print msg 
+		print reg[0:2] + " " + reg[2:] + " "+ data[0:2] + "  " + data[2:]
+		print self._checkSum(reg[0:2], reg[2:], data[0:2], data[2:] ).upper()

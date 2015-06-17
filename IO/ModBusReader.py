@@ -8,19 +8,15 @@ class ModBusReader(ModBusIO):
 	def __init__(self):		
 		self.function = "03"
 		self.writer = ModBusWriter()
-
-	def _checkSum(self, reg, regNumber):
-		cs = int( self.slaveAddress, 16 ) + int( self.function, 16 ) 
-		cs = cs + int( reg, 16 ) + int( regNumber, 16 )
-		return hex( 255 - cs + 1 )[2:]
-
+		
 	#receber numero do registrador e numero de registradores em hexa.
 	def read(self, reg, regNumber):
 		
 		query = self.iniMSG + self.slaveAddress + self.function
-		query = query + reg + regNumber + self._checkSum(reg,regNumber) + self.endMSG
+		query = query + reg + regNumber + self._checkSum(reg[0:2], reg[2:],regNumber[0:2],regNumber[2:]) + self.endMSG
 		
 		self.writer.question( query.upper() )
+		print query.upper()
 		#para debug.		
 		#print "sent: " +  ("3A 33 41 30 33 30 30 30 39 30 30 30 31 42 39 0D 0A").replace(" ", "").decode("hex")
 		
@@ -35,8 +31,8 @@ class ModBusReader(ModBusIO):
 						
 					word += b
 				else:
-					k = word.encode('hex').upper()
-					return k						
+					print word.encode('hex')
+					return word.upper()					
 
 			except Exception as e:
 				raise e 
