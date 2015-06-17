@@ -19,7 +19,8 @@ class ModBusWriter(ModBusIO):
 
 	#implementar
 	def write(self,reg,bit,data):
-		msg = self.iniMSG + self.slaveAddress + self.function + reg + data
-		print msg 
-		print reg[0:2] + " " + reg[2:] + " "+ data[0:2] + "  " + data[2:]
-		print self._checkSum(reg[0:2], reg[2:], data[0:2], data[2:] ).upper()
+		msg = self.iniMSG + self.slaveAddress + self.function + reg + data + self._checkSum(reg[0:2], reg[2:], data[0:2], data[2:] )
+		
+		print msg.upper()
+		serialPort.write(msg.upper())
+		

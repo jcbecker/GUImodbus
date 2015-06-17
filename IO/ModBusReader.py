@@ -16,7 +16,7 @@ class ModBusReader(ModBusIO):
 		query = query + reg + regNumber + self._checkSum(reg[0:2], reg[2:],regNumber[0:2],regNumber[2:]) + self.endMSG
 		
 		self.writer.question( query.upper() )
-		print query.upper()
+		
 		#para debug.		
 		#print "sent: " +  ("3A 33 41 30 33 30 30 30 39 30 30 30 31 42 39 0D 0A").replace(" ", "").decode("hex")
 		
@@ -31,7 +31,6 @@ class ModBusReader(ModBusIO):
 						
 					word += b
 				else:
-					print word.encode('hex')
 					return word.upper()					
 
 			except Exception as e:
