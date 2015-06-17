@@ -5,9 +5,8 @@ from ModBusWriter import ModBusWriter
 
 class ModBusReader(ModBusIO):
 
-	def __init__(self):
-		
-		self.function = "3033"
+	def __init__(self):		
+		self.function = "03"
 		self.writer = ModBusWriter()
 
 	def _checkSum(self, reg, regNumber):
@@ -15,23 +14,15 @@ class ModBusReader(ModBusIO):
 		cs = cs + int( reg, 16 ) + int( regNumber, 16 )
 		return hex( 255 - cs + 1 )[2:]
 
+	#receber numero do registrador e numero de registradores em hexa.
 	def read(self, reg, regNumber):
-		
-		###
-		#confFile = open("GUImodbus/Conf/conf.txt","r")
-		#confFile.readline();
-		#rport = confFile.readline().split('[')[1].split(']')[0]
-		#sPort = Serial(port = rport, baudrate = 9600, timeout = 3)
-		###
 		
 		query = self.iniMSG + self.slaveAddress + self.function
 		query = query + reg + regNumber + self._checkSum(reg,regNumber) + self.endMSG
 		
-		print query
-		
-		# Replace para poder escrever com espacos no meio
-		self.writer.write(("3A 33 41 30 33 30 30 30 30 30 30 30 39 42 41 0D 0A").replace(" ", "").decode("hex"))
-		print "sent: " +  ("3A 33 41 30 33 30 30 30 30 30 30 30 39 42 41 0D 0A").replace(" ", "").decode("hex")
+		self.writer.question( query.upper() )
+		#para debug.		
+		#print "sent: " +  ("3A 33 41 30 33 30 30 30 39 30 30 30 31 42 39 0D 0A").replace(" ", "").decode("hex")
 		
 		word = ""
 		while True:
@@ -44,8 +35,8 @@ class ModBusReader(ModBusIO):
 						
 					word += b
 				else:
-					print "received: " + word
-					return word						
+					k = word.encode('hex').upper()
+					return k						
 
 			except Exception as e:
 				raise e 

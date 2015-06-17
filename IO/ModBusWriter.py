@@ -12,20 +12,16 @@ class ModBusWriter(ModBusIO):
 		cs = cs + int(reg, 16) + int(regNumber, 16)
 		return hex( 255 - cs + 1 )[2:]
 
-	def write(self, t):
-		
-		###
-		#confFile = open("GUImodbus/Conf/conf.txt","r")
-		#wport = confFile.readline().split('[')[1].split(']')[0]
-		###
-		
-		msg = self.iniMSG + self.slaveAddress + self.function
-		
-		###
-		#sComm = Serial(port = wport, baudrate = 9600)		
-		###
+	#so faz uma pergunta para o escravo
+	#quem usa este metodo geralmente
+	#e a classe de leitura.
+	def question(self, t):
 		
 		try:
 			serialPort.write(t)				
 		except Exception as e:
 			raise e
+
+	#implementar
+	def write(self,reg,bit,data):
+		pass
