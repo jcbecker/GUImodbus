@@ -1,6 +1,5 @@
 from ..IO.ModBusWriter import ModBusWriter
 from ..IO.ModBusReader import ModBusReader
-from serial import Serial
 
 class Alarm:
 
@@ -9,8 +8,6 @@ class Alarm:
 	def __init__(self):		
 		self.writer = ModBusWriter()
 		self.reader = ModBusReader()
-		
-		self.porta = Serial(port = "COM1", baudrate = 9600, timeout = 3)
 		
 		self.monitRegBits['garagem']     = 0
 		self.monitRegBits['piscina']     = 1
@@ -38,7 +35,7 @@ class Alarm:
 		monitReg = "0009"
 		regNumber = "0001"
 		
-		self.reader.read(monitReg, regNumber, self.porta)
+		self.reader.read(monitReg, regNumber)
 		
 		#usar o bit 1 do registrador 9 para
 		#verificar se o alarme esta disparado.	
