@@ -8,6 +8,7 @@ alarm = Alarm()
 alarm.fired()
 #monitReg = "000A"
 
-#mw = ModBusWriter()
-#mw.write("015E",0, "07D5" )
+mw = ModBusWriter()
+mw.write("0009",0, "0001" )
+alarm.fired()
 #mbw
