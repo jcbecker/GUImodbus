@@ -35,7 +35,7 @@ class Alarm:
 		monitReg = "0009"
 		regNumber = "0001"
 		
-		self.reader.read(monitReg, regNumber)
+		print "resposta: " + self.reader.read(monitReg, regNumber)
 		
 		#usar o bit 1 do registrador 9 para
 		#verificar se o alarme esta disparado.	
