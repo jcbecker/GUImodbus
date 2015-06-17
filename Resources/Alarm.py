@@ -10,45 +10,47 @@ class Alarm:
 		self.reader = ModBusReader()
 		
 		self.monitRegBits['garagem']     = 0
-		self.monitRegBits['piscina']     = 1
+		self.monitRegBits['piscina1']    = 1
 		self.monitRegBits['cozinha']     = 2
 		self.monitRegBits['saladeestar'] = 3
 		self.monitRegBits['saladejogos'] = 4
 		self.monitRegBits['suite'] 	  	 = 5
 		self.monitRegBits['dormitorio1'] = 6
 		self.monitRegBits['dormitorio2'] = 7
-
-	def checkAlarm(self, place ):
 		
-		#ainda precisa tratar o
-		#parametro place.
-		if self.has_key( place ):
-			monitReg = 10		
-			bitCheck = self.mintRegBits[place]
-
-			#montar mensagem e verificar
-			#o status do alarm
-		else: 
-			return None
-
-	def fired( self ):	
-		monitReg = "0009"
+	def ONOFF( self ):
+		comReg = "0008"
+	
+		#usar o bit 0 do registrador 8 para
+		#ligar ou desligar o alarme da casa.
+		
+	def checkONOFF( self ):
+		monitReg = "000A"
 		regNumber = "0001"
+		
+		print "resposta: " + self.reader.read(monitReg,regNumber)	
+		
+		#usar o bit 0 do registrador 9 para 
+		#verificar se o alarme esta ligado ou desligado.
+	
+	def fired( self ):	
+		monitReg = "0000"
+		regNumber = "000b"
 		
 		print "resposta: " + self.reader.read(monitReg, regNumber)
 		
 		#usar o bit 1 do registrador 9 para
 		#verificar se o alarme esta disparado.	
 
-	def checkONOFF( self ):
-		pass
+	def checkAlarm(self, place ):
 		
-		#usar o bit 0 do registrador 9 para 
-		#verificar se o alarme esta ligado ou desligado.
+		if self.monitRegBits.has_key( place ):
+			monitReg = "000A"
+			regNumber = "0001"
 
-	def ONOFF( self ):
-		comReg = 8
-	
-		#usar o bit 9 do registrador 8 para
-		#ligar ou desligar o alarme da casa. 
+			#montar mensagem e verificar
+			#o status do alarm de um lugar em especifico
+		else: 
+			return None
+ 
 		
