@@ -29,8 +29,9 @@ class ModBusReader(ModBusIO):
 		
 		print query
 		
-		self.writer.write("3A33413033303030393030303042410D0A".decode("hex"))
-		print "sent: " +  "3A33413033303030303030303942410D0A".decode("hex")
+		# Replace para poder escrever com espacos no meio
+		self.writer.write(("3A 33 41 30 33 30 30 30 30 30 30 30 39 42 41 0D 0A").replace(" ", "").decode("hex"))
+		print "sent: " +  ("3A 33 41 30 33 30 30 30 30 30 30 30 39 42 41 0D 0A").replace(" ", "").decode("hex")
 		
 		word = ""
 		while True:
