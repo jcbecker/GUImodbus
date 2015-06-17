@@ -12,7 +12,7 @@ alarm.fired()
 time.sleep(2)
 
 mw = ModBusWriter()
-mw.write("0003", "0001" )
+mw.write("0001", "0001" )
 
 alarm.fired()
 #mbw
