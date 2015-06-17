@@ -1,6 +1,6 @@
 import time
 from serial import Serial
-from ModBusIO import ModBusIO
+from ModBusIO import *
 
 class ModBusWriter(ModBusIO):
 	
@@ -12,7 +12,7 @@ class ModBusWriter(ModBusIO):
 		cs = cs + int(reg, 16) + int(regNumber, 16)
 		return hex( 255 - cs + 1 )[2:]
 
-	def write(self, t, porta):
+	def write(self, t):
 		
 		###
 		#confFile = open("GUImodbus/Conf/conf.txt","r")
@@ -26,6 +26,6 @@ class ModBusWriter(ModBusIO):
 		###
 		
 		try:
-			porta.write(t)				
+			serialPort.write(t)				
 		except Exception as e:
 			raise e
