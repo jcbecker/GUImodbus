@@ -16,7 +16,7 @@ class Alarm:
 		self.monitRegBits['saladejogos'] = 4
 		self.monitRegBits['suite'] 	  	 = 5
 		self.monitRegBits['dormitorio1'] = 6
-		self.monitRegBits['dormitorio2'] = 7
+		self.monitRegBits['dormit	orio2'] = 7
 		
 	def ONOFF( self ):
 		comReg = "0008"
@@ -34,7 +34,7 @@ class Alarm:
 		#verificar se o alarme esta ligado ou desligado.
 	
 	def fired( self ):	
-		monitReg = "0009"
+		monitReg = "0002"
 		regNumber = "0001"
 		
 		print "resposta: " + self.reader.read(monitReg, regNumber)
