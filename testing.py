@@ -6,4 +6,8 @@ from IO.ModBusReader import ModBusReader
 alarm = Alarm()
 
 alarm.fired()
+#monitReg = "000A"
+
+#mw = ModBusWriter()
+#mw.write("015E",0, "07D5" )
 #mbw
