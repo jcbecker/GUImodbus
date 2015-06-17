@@ -27,7 +27,7 @@ class ModBusReader(ModBusIO):
 		query = query + reg + regNumber + self._checkSum(reg,regNumber) + self.endMSG
 		
 		print query
-		#modularizar isso para todas as classes.
+		
 		self.writer.write("3A33413033303030303030303942410D0A".decode("hex"), porta)
 		print "sent: " + "3A33413033303030303030303942410D0A".decode("hex")
 		
