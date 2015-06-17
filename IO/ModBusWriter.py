@@ -18,9 +18,13 @@ class ModBusWriter(ModBusIO):
 			raise e
 
 	#implementar
-	def write(self,reg,bit,data):
-		msg = self.iniMSG + self.slaveAddress + self.function + reg + data + self._checkSum(reg[0:2], reg[2:], data[0:2], data[2:] )
+	def write(self,reg,data):
+	
+		msg = self.iniMSG + self.slaveAddress + self.function + reg + data
 		
-		print msg.upper()
-		serialPort.write(msg.upper())
+		msg = msg + self._checkSum(reg[0:2], reg[2:], data[0:2], data[2:] ) + self.endMSG
 		
+		msg = msg.upper()
+		
+		print "Escrita: "+msg
+		serialPort.write(msg)
