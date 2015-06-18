@@ -1,2 +1,0 @@
-wport = [COM2]
-rport = [COM2]
