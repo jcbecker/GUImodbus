@@ -2,5 +2,6 @@
 socat -d -d pty,raw,echo=0 pty,raw,echo=0
 
 # Diagslave:
-./diagslave /dev/pts/3 -m ascii -o 3 -c 60 -a 58 -b 9600 -d 7 -s 2 -p none
+./diagslave /dev/pts/18 -m ascii -o 3 -c 60 -a 58 -b 9600 -d 8 -s 1 -p none
+
 
