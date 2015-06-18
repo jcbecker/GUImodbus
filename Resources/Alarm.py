@@ -20,6 +20,11 @@ class Alarm:
 		
 	def ONOFF( self ):
 		comReg = "0008"
+		regNumber = "0001"
+
+		answer = self.reader.read( comReg, regNumber )
+
+		print answer
 	
 		#usar o bit 0 do registrador 8 para
 		#ligar ou desligar o alarme da casa.
@@ -46,9 +51,10 @@ class Alarm:
 		bc = answer[5]+answer[6]
 
 		if bc != "02":
-			print "Resposta errada: "+ answer
-			#raise IOError("WrongAnswerException")
+			raise IOError("WrongAnswerException")
 
+		#nao tem como fazer operacao logica com o valor hexa
+		#porque o python trata o valor como string.
 		return ( int( answer[7:11], 16 ) & 2 ) != 0
 
 	def checkAlarm(self, place ):

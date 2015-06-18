@@ -4,6 +4,11 @@ from IO.ModBusWriter import ModBusWriter
 from IO.ModBusReader import ModBusReader
 import time
 
+#a = Alarm()
+
+#a.ONOFF()
+
+#teste do disparo do alarme
 mw = ModBusWriter()
 print "Resposta da escrita: " +mw.write("0009", "0001" )
 
