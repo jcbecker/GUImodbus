@@ -20,11 +20,6 @@ class ModBusReader(ModBusIO):
 		#para debug.		
 		#print "sent: " +  ("3A 33 41 30 33 30 30 30 39 30 30 30 31 42 39 0D 0A").replace(" ", "").decode("hex")
 		
-		return self.receive() 
-
-	#metodo para receber a resposta de um write.
-	def receive(self):
-
 		word = ""
 		while True:
 			try:

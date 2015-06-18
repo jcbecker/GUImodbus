@@ -25,5 +25,22 @@ class ModBusWriter(ModBusIO):
 		msg = msg + self._checkSum(reg[0:2], reg[2:], data[0:2], data[2:] ) + self.endMSG
 		
 		msg = msg.upper()
-		print "Escrita: " +msg
+		print "Escrita: " + msg
 		serialPort.write(msg)
+
+		#tem que ler a confirmacao =D
+		word = ""
+		while True:
+			try:
+				b = serialPort.read()
+				
+				if not "0d0a".decode('hex') in word:
+					if b is "":
+						raise IOError("ReadTimeoutException")
+						
+					word += b
+				else:
+					return word.upper()					
+
+			except Exception as e:
+				raise e
