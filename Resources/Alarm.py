@@ -18,25 +18,65 @@ class Alarm:
 		self.monitRegBits['dormitorio1'] = 6
 		self.monitRegBits['dormitorio2'] = 7
 		
+	#usa o bit 0 do registrador 8 para
+	#ligar ou desligar o alarme da casa
+	#retorna false se o alarme foi desligado
+	#retorna true se o alarme foi ligado.
 	def ONOFF( self ):
 		comReg = "0008"
 		regNumber = "0001"
 
 		answer = self.reader.read( comReg, regNumber )
 
-		print answer
-	
-		#usar o bit 0 do registrador 8 para
-		#ligar ou desligar o alarme da casa.
+		if answer[5]+answer[6] != "02":
+			raise IOError("AlarmAnswerException")	
+
+		regData = int( answer[7:11], 16 )
+
+		if regData & 1:
+			regData = regData - 1
+			self.state = False
+		else:
+			self.state = True
+			regData = regData + 1
+
+		regData = hex(regData)[2:]
+
+		l = len(regData)
+
+		if l == 1:
+			regData = "000"+regData
+		elif l == 2:
+			regData = "00"+regData
+		elif l == 3:
+			regData = "0"+regData
+
+		if self.writer.write( comReg, regData ):
+			return self.state
 		
+		raise IOError("AlarmAnswerException")
+	
+	#usa o bit 0 do registrador 9 para 
+	#verificar se o alarme esta ligado ou desligado.
+	#verifica se o alarme esta ligado ou desligado.
+	#retorna true se o alarme estiver ligado
+	#retorna false se o alarme estiver desligado
 	def checkONOFF( self ):
-		monitReg = "0001"
+		monitReg = "0009"
 		regNumber = "0001"
 		
-		print "resposta: " + self.reader.read(monitReg,regNumber)	
+		answer = self.reader.read( monitReg, regNumber )
+
+		if answer[5]+answer[6] != "02":
+			raise IOError("AlarmAnswerException")	
+
+		regData = int( answer[7:11], 16 )
+
+		if regData & 1:
+			return True
+		else:
+			return False
 		
-		#usar o bit 0 do registrador 9 para 
-		#verificar se o alarme esta ligado ou desligado.
 	
 	#usa o bit 1 do registrador 9 para
 	#verificar se o alarme esta disparado
@@ -48,13 +88,13 @@ class Alarm:
 		
 		answer = self.reader.read(monitReg, regNumber)
 
-		bc = answer[5]+answer[6]
+		if answer[5]+answer[6] != "02":
+			raise IOError("AlarmAnswerException")
 
-		if bc != "02":
-			raise IOError("WrongAnswerException")
-
-		#nao tem como fazer operacao logica com o valor hexa
-		#porque o python trata o valor como string.
+		#fazer operacao logica em hexa em python
+		#e uma droga porque ele fica adcionando
+		#um 0x no inicio ai depois eu teria que tratar
+		#la no calculo do checksum.
 		return ( int( answer[7:11], 16 ) & 2 ) != 0
 
 	def checkAlarm(self, place ):
