@@ -40,7 +40,7 @@ class ModBusWriter(ModBusIO):
 						
 					word += b
 				else:
-					return word.upper()					
+					return word.upper() == msg					
 
 			except Exception as e:
 				raise e
