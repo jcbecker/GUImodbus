@@ -72,10 +72,7 @@ class Alarm:
 
 		regData = int( answer[7:11], 16 )
 
-		if regData & 1:
-			return True
-		else:
-			return False
+		return regData & 1 != 0
 		
 	
 	#usa o bit 1 do registrador 9 para
@@ -103,6 +100,14 @@ class Alarm:
 			monitReg = "000A"
 			regNumber = "0001"
 
+			answer = self.reader.read( monitReg, regNumber )
+	
+			if answer[5]+answer[6] != "02":
+				raise IOError("AlarmAnswerException")
+
+			regData = int( answer[7:11], 16 )
+
+			return regData&( 1 << self.monitRegBits[place] ) != 0
 			#montar mensagem e verificar
 			#o status do alarm de um lugar em especifico
 		else: 
