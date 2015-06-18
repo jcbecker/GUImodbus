@@ -1,6 +1,6 @@
 from serial import Serial
 
-serialPort = Serial(port = "/dev/pts/9", baudrate = 9600, timeout = 3)
+serialPort = Serial(port = "/dev/pts/17", baudrate = 9600, timeout = 1)
 
 #nao instancie essa classe.
 class ModBusIO:

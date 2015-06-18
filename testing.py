@@ -4,15 +4,12 @@ from IO.ModBusWriter import ModBusWriter
 from IO.ModBusReader import ModBusReader
 import time
 
-alarm = Alarm()
-
-alarm.fired()
-#monitReg = "000A"
-
-time.sleep(2)
-
+a = Alarm()
+print "Leitura: " + a.fired()
 mw = ModBusWriter()
-mw.write("0001", "0001" )
+mw.write("0009", "0001" )
 
-alarm.fired()
+mr = ModBusReader()
+print "Resposta da escrita: " + mr.receive() 
+
 #mbw

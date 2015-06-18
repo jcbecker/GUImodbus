@@ -34,10 +34,10 @@ class Alarm:
 		#verificar se o alarme esta ligado ou desligado.
 	
 	def fired( self ):	
-		monitReg = "0002"
+		monitReg = "0009"
 		regNumber = "0001"
 		
-		print "resposta: " + self.reader.read(monitReg, regNumber)
+		return self.reader.read(monitReg, regNumber)
 		
 		#usar o bit 1 do registrador 9 para
 		#verificar se o alarme esta disparado.	
