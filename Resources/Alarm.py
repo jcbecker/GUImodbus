@@ -33,14 +33,23 @@ class Alarm:
 		#usar o bit 0 do registrador 9 para 
 		#verificar se o alarme esta ligado ou desligado.
 	
+	#usa o bit 1 do registrador 9 para
+	#verificar se o alarme esta disparado
+	#se o mesmo esta disparado retorna true
+	#senao false
 	def fired( self ):	
 		monitReg = "0009"
 		regNumber = "0001"
 		
-		return self.reader.read(monitReg, regNumber)
-		
-		#usar o bit 1 do registrador 9 para
-		#verificar se o alarme esta disparado.	
+		answer = self.reader.read(monitReg, regNumber)
+
+		bc = answer[5]+answer[6]
+
+		if bc != "02":
+			print "Resposta errada: "+ answer
+			#raise IOError("WrongAnswerException")
+
+		return ( int( answer[7:11], 16 ) & 2 ) != 0
 
 	def checkAlarm(self, place ):
 		
