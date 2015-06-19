@@ -1,5 +1,8 @@
 
-class Controller:
+#essa classe so deve ser instanciada para testes
+#na realidade e uma classe abstrata que vai ter filhos
+#para serem utilizados pela classe MyThread.
+class Monitor:
 
 	#name e apenas um nome para ajudar nos testes
 	#na classe thread, user e uma classe que vai

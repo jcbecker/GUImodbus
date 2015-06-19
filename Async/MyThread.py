@@ -3,13 +3,15 @@ import time
 
 class MyThread(Thread):
 
-	def __init__(self, name, ctrl ):
+	def __init__(self, name, m ):
 		Thread.__init__(self)
 		self.tName = name
-		self.ctrl = ctrl
+		self.monitor = m
 
+	#como as thread iram fazer somente leitura
+	#nao precisa controlar o sincronismo.
 	def run(self):
 		while True:
-			self.ctrl.myTurn()
+			self.monitor.myTurn()
 
 			time.sleep(3)
