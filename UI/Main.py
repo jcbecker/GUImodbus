@@ -1,67 +1,96 @@
 from Tkinter import *
+import tkFont as font
+
+class Main:
+
+    def __init__( self, root ):
+        self.screenWidth = root.winfo_screenwidth()-10
+        self.screenHeight = root.winfo_screenheight()-10
+
+        root.geometry(str(self.screenWidth)+"x"+str(self.screenHeight))
+        root.wm_title("Controle da casa")
+        root.configure(background="white")
+
+        #distancia entre linhas.
+        self.distBetweenLines = self.screenHeight*0.01
+
+        #distancia entre botoes na segunda linha.
+        self.distBetweenBtnSecLine = self.screenWidth*0.04
+
+        #distancia entre botoes na quarta linha.
+        self.distBetweenBtnFourthLine = self.screenWidth*0.1
+        self.labelHeight = 0.10*self.screenHeight
+
+        self.labelFont = font.Font(weight="normal",size=20)
+        self.labelBtn = font.Font(weight="normal",size=16)
+
+        self.line1()
+        self.line2()
+        self.line3()
+        self.line4()
+		
+    def line1(self):
+
+		self.monitoring = Label(root, text="Monitoramento", bg="white",font=self.labelFont)
+		self.monitoring.place(x=0, 
+		                      y=0,
+                              width=self.screenWidth,
+                              height=self.labelHeight)
+
+    def line2(self):
+
+		self.wmBtn = Button( root, text = "Água", fg="blue", bg="white", activebackground="white",font=self.labelBtn)
+		self.wmBtn.place(x=self.distBetweenBtnSecLine,
+				         y=self.labelHeight + 5,
+				         width=self.screenWidth*0.20,
+				         height=self.screenHeight*0.10)
+
+		self.amBtn = Button( root, text = "Alarme", fg="red", bg="white", activebackground="white",font=self.labelBtn)
+		self.amBtn.place(x = self.screenWidth*0.20 + self.distBetweenBtnSecLine*2,
+        				 y = self.labelHeight + 5,
+		        		 width= self.screenWidth*0.20,
+		        		 height= self.screenHeight*0.10)
+
+		self.imBtn = Button( root, text = "Iluminação", fg="green", bg="white", activebackground="white",font=self.labelBtn)
+		self.imBtn.place(x = self.screenWidth*0.40 + self.distBetweenBtnSecLine*3,
+		        		 y = self.labelHeight + 5,
+		        		 width = self.screenWidth*0.20,
+		        		 height = self.screenHeight*0.10)
+
+		self.tmBtn = Button( root, text = "Temperatura", fg="orange", bg="white", activebackground="white",font=self.labelBtn)
+		self.tmBtn.place(x = self.screenWidth*0.60 + self.distBetweenBtnSecLine*4,
+		        		 y = self.labelHeight + self.distBetweenLines,
+					     width = self.screenWidth*0.20,
+					     height = self.screenHeight*0.10)
+					
+    def line3(self):
+
+        self.commands = Label(root, text="Acionamentos", bg="white", activebackground="white", font = self.labelFont)
+        self.commands.place(x = 0,
+			                y = 2*(self.labelHeight + self.distBetweenLines),
+			                width = self.screenWidth,
+			                height = self.labelHeight)
+					   
+    def line4(self):
+
+		self.waBtn = Button( root, text = "Água", fg="blue", bg="white", activebackground="white",font=self.labelBtn)
+		self.waBtn.place(x = self.distBetweenBtnFourthLine,
+				         y = 3*(self.labelHeight + self.distBetweenLines),
+				         width = self.screenWidth*0.20,
+				         height = self.screenHeight*0.10)
+
+		self.aaBtn = Button( root, text = "Alarme", fg="red", bg="white", activebackground="white",font=self.labelBtn)
+		self.aaBtn.place(x = self.screenWidth*0.2 + self.distBetweenBtnFourthLine*2,
+				         y = 3*(self.labelHeight + self.distBetweenLines),
+				         width = self.screenWidth*0.20,
+				         height = self.screenHeight*0.10)
+
+		self.iaBtn = Button( root, text = "Iluminação", fg="green", bg="white", activebackground="white",font=self.labelBtn)
+		self.iaBtn.place(x = self.screenWidth*0.4 + self.distBetweenBtnFourthLine*3,
+				         y = 3*(self.labelHeight + self.distBetweenLines),
+				         width = self.screenWidth*0.20,
+				         height = self.screenHeight*0.10)
 
 root = Tk()
-screenWidth = root.winfo_screenwidth()-10
-screenHeight = root.winfo_screenheight()-10
-
-root.geometry(str(screenWidth)+"x"+str(screenHeight))
-root.wm_title("Controle da casa")
-root.configure(background="white")
-
-distBetweenLines = screenHeight*0.01
-distBetweenBtnSecLine = screenWidth*0.04
-distBetweenBtnFourthLine = screenWidth*0.1
-labelHeight = 0.10*screenHeight
-
-monitoring = Label(root, text="Monitoramento", bg="white")
-monitoring.place(x=0,y=0,width=screenWidth,height=labelHeight)
-
-wmBtn = Button( root, text = "Água", fg="blue", bg="white", activebackground="white")
-wmBtn.place(x=distBetweenBtnSecLine,
-			y=labelHeight + 5,
-			width=screenWidth*0.20,
-			height=screenHeight*0.10)
-
-amBtn = Button( root, text = "Alarme", fg="red", bg="white", activebackground="white")
-amBtn.place(x = screenWidth*0.20 + distBetweenBtnSecLine*2,
-			y = labelHeight + 5,
-			width= screenWidth*0.20,
-			height= screenHeight*0.10)
-
-imBtn = Button( root, text = "Iluminação", fg="green", bg="white", activebackground="white")
-imBtn.place(x = screenWidth*0.40 + distBetweenBtnSecLine*3,
-		    y = labelHeight + 5,
-		    width = screenWidth*0.20,
-		    height = screenHeight*0.10)
-
-tmBtn = Button( root, text = "Temperatura", fg="orange", bg="white", activebackground="white")
-tmBtn.place(x = screenWidth*0.60 + distBetweenBtnSecLine*4,
-			y = labelHeight + distBetweenLines,
-			width = screenWidth*0.20,
-			height = screenHeight*0.10)
-
-commands = Label(root, text="Acionamentos", bg="white", activebackground="white")
-commands.place(x = 0,
-			   y = 2*(labelHeight + distBetweenLines),
-			   width = screenWidth,
-			   height = labelHeight)
-
-waBtn = Button( root, text = "Água", fg="blue", bg="white", activebackground="white")
-waBtn.place(x = distBetweenBtnFourthLine,
-		    y = 3*(labelHeight + distBetweenLines),
-		    width = screenWidth*0.20,
-		    height = screenWidth*0.10)
-
-aaBtn = Button( root, text = "Alarme", fg="red", bg="white", activebackground="white")
-aaBtn.place(x = screenWidth*0.2 + distBetweenBtnFourthLine*2,
-		    y = 3*(labelHeight + distBetweenLines),
-		    width = screenWidth*0.20,
-		    height = screenWidth*0.10)
-
-iaBtn = Button( root, text = "Iluminação", fg="green", bg="white", activebackground="white")
-iaBtn.place(x = screenWidth*0.4 + distBetweenBtnFourthLine*3,
-		    y = 3*(labelHeight + distBetweenLines),
-		    width = screenWidth*0.20,
-		    height = screenWidth*0.10)
-
+app = Main(root)
 root.mainloop()
