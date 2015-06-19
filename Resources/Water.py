@@ -78,49 +78,127 @@ class Water:
 		if not status:
 			raise IOError("HotWaterBathtub WriteException") 
 		return status
-		
-		
-	def comOnOfHotWater(self):
+
+	def ColdBathtub (self):
 		comReg = "0008"
 		regNumber = "0001"
 		
 		answer = self.reader.read(comReg, regNumber)
+		if answer [5:7] != "02":
+			raise IOError ("ColdWaterBathtub AnswerException")
 		
-		if answer[5]+answer[6] != "02":
-			raise IOError("WaterAnswerException")
+		regState = (int(answer[7:11],16))
 		
-		
-		waters = []
-		waterState = (int(answer[7:11], 16))
-		
-		
-		
-		
-		
-		if (waterState & 2) == 0 :
-			waters.append(0)
+		if (regState & 4)== 0:
+			regData = regState | 4
 		else:
-			waters.append(1)
+			regData = ~ 4
+			regData = regData & regState 
 		
-		if (waterState & 4) == 0:
-			waters.append(0)
+		regData = hex(regData)[2:]
+		
+		l = len(regData)
+		
+		while l < 4 :
+			regData="0"+regData
+			l=len(regData)
+		
+		status = self.writer.write (comReg,regData)
+		
+		if not status:
+			raise IOError("ColdWaterBathtub WriteException") 
+		return status
+	
+	
+	def ExhaustBathtub (self):
+		comReg = "0008"
+		regNumber = "0001"
+		
+		answer = self.reader.read(comReg, regNumber)
+		if answer [5:7] != "02":
+			raise IOError ("ExhaustBathtub AnswerException")
+		
+		regState = (int(answer[7:11],16))
+		
+		if (regState & 8)== 0:
+			regData = regState | 8
 		else:
-			waters.append(1)
+			regData = ~ 8
+			regData = regData & regState 
 		
-		if (waterState & 8) == 0:
-			waters.append(0)
+		regData = hex(regData)[2:]
+		
+		l = len(regData)
+		
+		while l < 4 :
+			regData="0"+regData
+			l=len(regData)
+		
+		status = self.writer.write (comReg,regData)
+		
+		if not status:
+			raise IOError("ExhaustBathtub WriteException") 
+		return status
+	
+	
+	def HotPool (self):
+		comReg = "0008"
+		regNumber = "0001"
+		
+		answer = self.reader.read(comReg, regNumber)
+		if answer [5:7] != "02":
+			raise IOError ("HotPool AnswerException")
+		
+		regState = (int(answer[7:11],16))
+		
+		if (regState & 16)== 0:
+			regData = regState | 16
 		else:
-			waters.append(1)
+			regData = ~ 16
+			regData = regData & regState 
 		
-		if (waterState & 16) == 0:
-			waters.append(0)
+		regData = hex(regData)[2:]
+		
+		l = len(regData)
+		
+		while l < 4 :
+			regData="0"+regData
+			l=len(regData)
+		
+		status = self.writer.write (comReg,regData)
+		
+		if not status:
+			raise IOError("HotPool WriteException") 
+		return status
+	
+	
+	
+	def ColdPool (self):
+		comReg = "0008"
+		regNumber = "0001"
+		
+		answer = self.reader.read(comReg, regNumber)
+		if answer [5:7] != "02":
+			raise IOError ("ColdPool AnswerException")
+		
+		regState = (int(answer[7:11],16))
+		
+		if (regState & 32)== 0:
+			regData = regState | 32
 		else:
-			waters.append(1)
+			regData = ~ 32
+			regData = regData & regState 
 		
-		if (waterState & 32) == 0:
-			waters.append(0)
-		else:
-			waters.append(1)
+		regData = hex(regData)[2:]
 		
+		l = len(regData)
 		
+		while l < 4 :
+			regData="0"+regData
+			l=len(regData)
 		
+		status = self.writer.write (comReg,regData)
+		
+		if not status:
+			raise IOError("ColdPool WriteException") 
+		return status

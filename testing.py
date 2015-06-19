@@ -9,11 +9,72 @@ import time
 water = Water()
 mv = ModBusWriter()
 reader =  ModBusReader()
+
 for i in range(12):
-	if water.HotBathtub():
-		print "ok"
+
+	print "digite oq vc quer mudar opcoes"
+	print "hotbathtub       = hb"
+	print "coldbathtub      = cb"
+	print "ExhaustBathtub   = eb"
+	print "hotpool          = hp"
+	print "coldpool         = cp"
+	stdin = raw_input ()
+
+	if stdin == "hb":
+		water.HotBathtub()
+		
+	elif stdin == "cb":
+		water.ColdBathtub()
+		
+	elif stdin == "eb":
+		water.ExhaustBathtub()
+		
+	elif stdin == "hp":
+		water.HotPool()
+		
+	elif stdin == "cp":
+		water.ColdPool()
+		
+	else:
+		print "nada foi escolhido"
+
 	answer = reader.read("0008", "0001")
-	print answer
+	retState = (int(answer[7:11],16))
+
+
+
+	if (retState & 2)== 0:
+		print "hotbathtub off"
+	else:
+		print "hotbathtub on"
+
+	if (retState & 4)== 0:
+		print "coldbathtub off"
+	else:
+		print "coldbathtub on"
+
+	if (retState & 8)== 0:
+		print "ExhaustBathtub off"
+	else:
+		print "ExhaustBathtub on"
+		
+	if (retState & 16)== 0:
+		print "HotPool off"
+	else:
+		print "HotPool on"
+
+	if (retState & 32)== 0:
+		print "ColdPool off"
+	else:
+		print "ColdPool on"
+
+
+
+#for i in range(12):
+#	if water.HotBathtub():
+#		print "ok"
+#	answer = reader.read("0008", "0001")
+#	print answer
 
 
 
