@@ -3,9 +3,8 @@ import time
 
 class MyThread(Thread):
 
-	def __init__(self, name, m ):
+	def __init__(self, m ):
 		Thread.__init__(self)
-		self.tName = name
 		self.monitor = m
 
 	#como as thread iram fazer somente leitura
