@@ -8,11 +8,7 @@ from Resources.Alarm import Alarm
 import time
 
 tm = TemperatureMonitor( "Temperature", Temperature() )
-t = MyThread( tm )
-
 ta = AlarmMonitor( "Alarm", Alarm() )
-t2 = MyThread( ta )
+t = MyThread( [ tm, ta ] )
 
 t.start()
-time.sleep(2)
-t2.start()
