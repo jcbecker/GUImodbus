@@ -84,7 +84,7 @@ class Alarm:
 		regNumber = "0001"
 		
 		answer = self.reader.read(monitReg, regNumber)
-
+		
 		if answer[5]+answer[6] != "02":
 			raise IOError("AlarmAnswerException")
 

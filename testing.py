@@ -1,29 +1,33 @@
 from Resources.Water import Water
 from Resources.Alarm import Alarm
+from Resources.Temperature import Temperature
 from IO.ModBusWriter import ModBusWriter
 from IO.ModBusReader import ModBusReader
 import time
 
+t = Temperature()
+t.readTemp()
+
 #--inicio do teste da verificacao do alarme em todos os locais.
-a = Alarm()
-if a.checkAlarm("garagem"):
-	print "O alarme da garagem esta ligado."
-else:
-	print "O alarme da garagem esta desligado."
+#a = Alarm()
+#if a.checkAlarm("garagem"):
+#	print "O alarme da garagem esta ligado."
+#else:
+#	print "O alarme da garagem esta desligado."
 
-mw = ModBusWriter()
-if mw.write("000A","0002"):
-	print "O alarme da piscina foi aceso."
+#mw = ModBusWriter()
+#if mw.write("000A","0002"):
+#	print "O alarme da piscina foi aceso."
 
-if a.checkAlarm("piscina1"):
-	print "O alarme da piscina esta ligado."
-else:
-	print "O alarme da piscina esta desligado."
+#if a.checkAlarm("piscina1"):
+#	print "O alarme da piscina esta ligado."
+#else:
+#	print "O alarme da piscina esta desligado."
 
-if a.checkAlarm("cozinha"):
-	print "O alarme da cozinha esta ligado."
-else:
-	print "O alarme da cozinha esta desligado."
+#if a.checkAlarm("cozinha"):
+#	print "O alarme da cozinha esta ligado."
+#else:
+#	print "O alarme da cozinha esta desligado."
 #--fim do teste da verificacao do alarme em todos os locais.
 
 #--inicio do teste da ligacao do alarme e da checagem
