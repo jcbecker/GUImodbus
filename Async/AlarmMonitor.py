@@ -6,3 +6,5 @@ class AlarmMonitor(Monitor):
 
 		if self.user.fired():
 			print "O alarme esta disparado."
+		else:
+			print "O alarme nao esta disparado."
