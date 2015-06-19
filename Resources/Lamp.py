@@ -3,15 +3,13 @@ from ..IO.ModBusWriter import ModBusWriter
 
 class Lamp:
 
-	monitReg11 = {}
-	monitReg12 = {}
-	monitReg13 = {}
 	comReg14 = {}
 	comReg15 = {}
 	comReg16 = {}
 
 	def __init__(self):
 		self.reader = ModBusReader()
+		self.writer = ModBusWriter()
 
 	def monitLamps(self):
 		monitReg = "000B"
@@ -37,27 +35,25 @@ class Lamp:
 		#lamps[3]: registrador 13
 		
 		return lamps
+
 		
-	def comLamp1(self,place):
-		if self.comReg14.has_key(place):
-			reg = self.comReg14[place]
+	def comLamp1(self,data):
+		Reg = "000E"
+		return LampWrite(Reg, data)
 
-			#pedir informacao
+	def comLamp2(self,data):
+		Reg = "000F"
+		return LampWrite(Reg, data)
+
+
+	def comLamp3(self,data):
+		Reg = "0010"
+		return LampWrite(Reg, data)
+			
+			
+	def LampWrite(self, Reg, data):
+		if not self.writer.write(Reg, data):
+			if not self.writer.write(Reg, data):
+				raise Exception("WriteException")
 		else:
-			return None
-
-	def comLamp2(self,place):
-		if self.comReg15.has_key(place):
-			reg = self.comReg15[place]
-
-			#pedir informacao
-		else:
-			return None
-
-	def comLamp3(self,place):
-		if self.comReg16.has_key(place):
-			reg = self.comReg16[place]
-
-			#pedir informacao
-		else:
-			return None
+			return True
