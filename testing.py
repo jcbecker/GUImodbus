@@ -8,6 +8,18 @@ import time
 
 water = Water()
 mv = ModBusWriter()
+reader =  ModBusReader()
+for i in range(12):
+	if water.HotBathtub():
+		print "ok"
+	answer = reader.read("0008", "0001")
+	print answer
+
+
+
+
+
+"""
 if mv.write("0007","0008"):
 	print "escreveu no registrador 7, registrador do nivel da agua"
 
@@ -19,10 +31,9 @@ if mv.write ("0009","0000"):
 for i in water.MonitWater():
 	print i
 
+aqui acaba uma e começa outro teste 
 
 
-
-"""
 lamp = Lamp()
 if lamp.comLamp1("0002"):
 	print "Conseguiu escrever"
