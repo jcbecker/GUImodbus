@@ -1,13 +1,25 @@
 from Resources.Water import Water
 from Resources.Alarm import Alarm
+from Resources.Lamp import Lamp
 from Resources.Temperature import Temperature
 from IO.ModBusWriter import ModBusWriter
 from IO.ModBusReader import ModBusReader
 import time
 
-t = Temperature()
-t.readTemp()
+lamp = Lamp()
+lamp.monitLamps()
 
+mw = ModBusWriter()
+if mw.write("000B", "0020"):
+	print "escreveu no registrador 11"
+	
+if mw.write("000C", "0080"):
+	print "escreveu no registrador 12"
+	
+if mw.write("000D", "0010"):
+	print "escreveu no registrador 13"
+
+lamp.monitLamps()	
 #--inicio do teste da verificacao do alarme em todos os locais.
 #a = Alarm()
 #if a.checkAlarm("garagem"):

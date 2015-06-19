@@ -107,7 +107,7 @@ class Alarm:
 				raise IOError("AlarmAnswerException")
 
 			regData = int( answer[7:11], 16 )
-
+			
 			return regData&( 1 << self.monitRegBits[place] ) != 0
 		else: 
 			return None

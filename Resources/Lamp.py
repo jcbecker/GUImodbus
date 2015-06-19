@@ -11,80 +11,33 @@ class Lamp:
 	comReg16 = {}
 
 	def __init__(self):
-		self.monitReg11['saladeestar1'] = 0
-		self.monitReg11['saladeestar2'] = 1
-		self.monitReg11['saladeestar3'] = 2
-		self.monitReg11['saladejantar1'] = 3
-		self.monitReg11['saladejantar2'] = 4
-		self.monitReg11['saladejogos1'] = 5
-		self.monitReg11['saladejogos2'] = 6
-		self.monitReg11['dormitorio1'] = 7
+		self.reader = ModBusReader()
 
-		self.monitReg12['bwc1'] = 0
-		self.monitReg12['circulacao'] = 1
-		self.monitReg12['dormitorio2'] = 2
-		self.monitReg12['closed'] = 3
-		self.monitReg12['bwc2'] = 4
-		self.monitReg12['suite1'] = 5
-		self.monitReg12['suite2'] = 6
-		self.monitReg12['suite3'] = 7
+	def monitLamps(self):
+		monitReg = "000B"
+		regNumber = "0003"
 		
-		self.monitReg13['bwc'] = 0
-		self.monitReg13['deposito'] = 1
-		self.monitReg13['varandadapiscina'] = 2
-		self.monitReg13['piscina1'] = 3
-		self.monitReg13['piscina2'] = 4
-		self.monitReg13['piscina3'] = 5
-
-		self.comReg14['saladeestar1'] = 0
-		self.comReg14['saladeestar1'] = 1
-		self.comReg14['saladeestar1'] = 2
-		self.comReg14['saladeestar1'] = 3
-		self.comReg14['saladeestar1'] = 4
-		self.comReg14['saladeestar1'] = 5
-		self.comReg14['saladeestar1'] = 6
-		self.comReg14['saladeestar1'] = 7
+		answer = self.reader.read(monitReg,regNumber)
 		
-		self.comReg15['bwc1'] = 0
-		self.comReg15['circulacao'] = 1
-		self.comReg15['dormitorio2'] = 2
-		self.comReg15['closed'] = 3
-		self.comReg15['bwc2'] = 4
-		self.comReg15['suite1'] = 5
-		self.comReg15['suite2'] = 6
-		self.comReg15['suite3'] = 7
-
-		self.comReg16['bwc'] = 0
-		self.comReg16['deposito'] = 1
-		self.comReg16['varandadapiscina'] = 2
-		self.comReg16['piscina1'] = 3
-		self.comReg16['piscina2'] = 4
-		self.comReg16['piscina3'] = 5
-
-	def monitLamps1(self,place):
-		if self.monitReg11.has_key(place):
-			reg = self.monitReg11[place]
-
-			#pedir informacao
-		else:
-			return None
-
-	def monitLamps2(self,place):
-		if self.monitReg12.has_key(place):
-			reg = self.monitReg12[place]
-
-			#pedir informacao
-		else:
-			return None
-
-	def monitLamps3(self,place):
-		if self.monitReg13.has_key(place):
-			reg = self.monitReg13[place]
-
-			#pedir informacao
-		else:
-			return None
-
+		if answer[5:7] != "06":
+			raise IOError ("Wrong answer exception")
+		
+		print answer
+		lamps = []
+		lamps.append( int( answer[7:11], 16 ) )
+		lamps.append( int( answer[11:15], 16 ) )
+		lamps.append( int( answer[15:19], 16 ) )
+		
+		#print int( answer[7:11], 16 )
+		#print int( answer[11:15], 16 )
+		#print int( answer[15:19], 16 )
+		
+		#lamps[0]: registrador 11
+		#lamps[1]: registrador 12
+		#lamps[3]: registrador 13
+		
+		return lamps
+		
 	def comLamp1(self,place):
 		if self.comReg14.has_key(place):
 			reg = self.comReg14[place]
