@@ -88,12 +88,13 @@ class Alarm:
 		if answer[5]+answer[6] != "02":
 			raise IOError("AlarmAnswerException")
 
-		#fazer operacao logica em hexa em python
-		#e uma droga porque ele fica adcionando
-		#um 0x no inicio ai depois eu teria que tratar
-		#la no calculo do checksum.
+		#nao consegui fazer operacao logica em hexa.
 		return ( int( answer[7:11], 16 ) & 2 ) != 0
 
+	#recebe um lugar, verifica se o mesmo
+	#possui bit de monitoramento de alarme
+	#se possui verifica se o alarme esta
+	#ligado ou nao.
 	def checkAlarm(self, place ):
 		
 		if self.monitRegBits.has_key( place ):
@@ -108,9 +109,5 @@ class Alarm:
 			regData = int( answer[7:11], 16 )
 
 			return regData&( 1 << self.monitRegBits[place] ) != 0
-			#montar mensagem e verificar
-			#o status do alarm de um lugar em especifico
 		else: 
 			return None
- 
-		
