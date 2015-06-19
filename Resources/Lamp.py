@@ -36,24 +36,26 @@ class Lamp:
 		
 		return lamps
 
-		
-	def comLamp1(self,data):
-		Reg = "000E"
-		return LampWrite(Reg, data)
 
-	def comLamp2(self,data):
-		Reg = "000F"
-		return LampWrite(Reg, data)
-
-
-	def comLamp3(self,data):
-		Reg = "0010"
-		return LampWrite(Reg, data)
-			
-			
 	def LampWrite(self, Reg, data):
 		if not self.writer.write(Reg, data):
 			if not self.writer.write(Reg, data):
 				raise Exception("WriteException")
 		else:
 			return True
+
+		
+	def comLamp1(self,data):
+		Reg = "000E"
+		return self.LampWrite(Reg, data)
+
+	def comLamp2(self,data):
+		Reg = "000F"
+		return self.LampWrite(Reg, data)
+
+	def comLamp3(self,data):
+		Reg = "0010"
+		return self.LampWrite(Reg, data)
+			
+			
+	

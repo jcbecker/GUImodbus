@@ -7,8 +7,11 @@ from IO.ModBusReader import ModBusReader
 import time
 
 lamp = Lamp()
-lamp.monitLamps()
-
+if lamp.comLamp1("0002"):
+	print "Conseguiu escrever"
+	
+print lamp.monitLamps()[0]
+"""
 mw = ModBusWriter()
 if mw.write("000B", "0020"):
 	print "escreveu no registrador 11"
@@ -79,3 +82,4 @@ lamp.monitLamps()
 #	print "O alarme nao esta disparado"
 #--fim do teste do disparo do alarme
 #mbw
+"""
