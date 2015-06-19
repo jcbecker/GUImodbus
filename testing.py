@@ -6,12 +6,29 @@ from IO.ModBusWriter import ModBusWriter
 from IO.ModBusReader import ModBusReader
 import time
 
+water = Water()
+mv = ModBusWriter()
+if mv.write("0007","0008"):
+	print "escreveu no registrador 7, registrador do nivel da agua"
+
+if mv.write ("0009","0000"):
+	print "escreveu no registrador 9, ligou o bit 4, terceiro"
+
+
+
+for i in water.MonitWater():
+	print i
+
+
+
+
+"""
 lamp = Lamp()
 if lamp.comLamp1("0002"):
 	print "Conseguiu escrever"
 	
 print lamp.monitLamps()[0]
-"""
+
 mw = ModBusWriter()
 if mw.write("000B", "0020"):
 	print "escreveu no registrador 11"
