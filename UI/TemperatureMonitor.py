@@ -4,44 +4,48 @@ import tkFont as font
 import threading
 import time
 
-class TemperatureMonitor(tk.Frame, threading.Thread):
+class TemperatureMonitor(tk.Frame,threading.Thread):
 			
 	def __init__(self, parent, controller ):
-		tk.Frame.__init__(self,parent)
+		tk.Frame.__init__(self,parent,background = "white")
 		threading.Thread.__init__(self)
 
 		self.user = Temperature()
-		self.start()
+		self.parent = parent
+		self.ctrl = controller
+		self.stopQuery = False
 			
 	def run(self):
-		l0 = tk.Label( self, text = "Temperatura da Casa", font = font.Font(weight="normal",size=20), bg="white")
-		l0.pack(side="top",fill="both",expand= True)
+		while not self.stopQuery:
+			children = self.parent.winfo_children()
+			for widget in children:
+				widget.destroy()
 
-		l1 = tk.Label( self )
-		l1.pack(side="top",fill="both",expand = True)
+			l0 = tk.Label( self.parent, text = "Temperatura da Casa", font = font.Font(weight="normal",size=20), bg="white")
+			l0.pack(side="top",fill="both",expand= True,ipady=30)
 
-		l2 = tk.Label( self )
-		l2.pack(side="top",fill="both",expand = True)
+			l1 = tk.Label( self.parent, bg="white", font = font.Font(weight="normal",size=14) )
+			l1.pack(side="top",fill="both",expand = True,ipady=25)
 
-		l3 = tk.Label( self )
-		l3.pack(side="top",fill="both",expand = True)
+			l2 = tk.Label( self.parent, bg="white", font = font.Font(weight="normal",size=14) )
+			l2.pack(side="top",fill="both",expand = True,ipady=25)
 
-		l4 = tk.Label( self )
-		l4.pack(side="top",fill="both",expand = True)
+			l3 = tk.Label( self.parent, bg="white", font = font.Font(weight="normal",size=14) )
+			l3.pack(side="top",fill="both",expand = True,ipady=25)
 
-		l5 = tk.Label( self )
-		l5.pack(side="top",fill="both",expand = True)
+			l4 = tk.Label( self.parent, bg="white", font = font.Font(weight="normal",size=14) )
+			l4.pack(side="top",fill="both",expand = True,ipady=25)
 
-		l6 = tk.Label( self )
-		l6.pack(side="top",fill="both",expand = True)		
-		
-		l7 = tk.Label( self )
-		l7.pack(side="top",fill="both",expand = True)
+			l5 = tk.Label( self.parent, bg="white", font = font.Font(weight="normal",size=14) )
+			l5.pack(side="top",fill="both",expand = True,ipady=25)
 
-		#se sobrar tempo arrumar um sistema de cores.
-		while True:
-			temps = self.user.readTemp()
+			l6 = tk.Label( self.parent, bg="white", font = font.Font(weight="normal",size=14) )
+			l6.pack(side="top",fill="both",expand = True,ipady=25)		
 			
+			l7 = tk.Label( self.parent, bg="white", font = font.Font(weight="normal",size=14) )
+			l7.pack(side="top",fill="both",expand = True,ipady=25)
+			
+			temps = self.user.readTemp()
 
 			l1.configure( text = "Piscina: " + str( int( temps[0], 16 ) ) + " Graus", bg= "white" )
 			l2.configure( text = "Banheira: " + str( int( temps[1], 16 ) ) + " Graus", bg= "white" )			
@@ -50,7 +54,6 @@ class TemperatureMonitor(tk.Frame, threading.Thread):
 			l5.configure( text = "Sala de jogos: " + str( int( temps[4], 16 ) ) + " Graus", bg= "white" )
 			l6.configure( text = "Dormitorio 1: " + str( int( temps[5], 16 ) ) + " Graus", bg= "white" )
 			l7.configure( text = "Dormitorio 2: " + str( int( temps[6], 16 ) ) + " Graus", bg= "white" )
-
-			self.update()
-
-			time.sleep(1)
+			self.ctrl.update()
+			print "monitor de temperatura dormindo.."
+			time.sleep(2)
