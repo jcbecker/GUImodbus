@@ -1,6 +1,10 @@
-import Tkinter as tk
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
 import tkFont as font
+import Tkinter as tk
+
 from TemperatureMonitor import TemperatureMonitor 
+from LampMonitor import LampMonitor
 
 class Main(tk.Tk):
 
@@ -21,7 +25,7 @@ class Main(tk.Tk):
 
 		#distancia entre botoes na quarta linha.
 		self.distBetweenBtnFourthLine = self.screenWidth*0.1
-		self.labelHeight = 0.10*self.screenHeight
+		self.labelHeight = 0.07*self.screenHeight
 
 		self.labelFont = font.Font(weight="normal",size=20)
 		self.btnFont = font.Font(weight="normal",size=14)
@@ -31,25 +35,23 @@ class Main(tk.Tk):
 		self.line3()
 		self.line4()
 
-		actions = tk.Frame(self)
-		actions.pack(side="bottom", fill="x", expand = True)
-		actions.grid_rowconfigure(0,weight=1)		
-		actions.grid_columnconfigure(0,weight=1)
+		self.actions = tk.Frame(height = self.screenHeight*0.63,width=self.screenWidth)
+		self.actions.pack(side="bottom", fill="x", expand = False)
+		self.actions.grid_rowconfigure(0,weight=1)		
+		self.actions.grid_columnconfigure(0,weight=1)
 
-		self.frames = {}
+		self.showing = None
+		self.tempMonitor = TemperatureMonitor(self.actions,self)
 
-		for f in [TemperatureMonitor]:
-			frame = f(actions,self)
 
-			self.frames[f] = frame
+	def showTempMonitor(self):
+		if self.showing is not None:
+			self.showing.stopQuery = True
 
-			frame.grid(row=0,column=0,sticky="nsew")
-
-		#self.showFrame(TemperatureMonitor)
-
-	def showFrame(self, container):
-		frame = self.frames[container]
-		frame.tkraise()
+		self.showing = self.tempMonitor
+		self.tempMonitor.start()
+		self.tempMonitor.tkraise()
+	
 
 	def line1(self):
 		self.monitoring = tk.Label(self, text="Monitoramento", bg="white",font=self.labelFont)
@@ -79,7 +81,7 @@ class Main(tk.Tk):
 						 height = self.screenHeight*0.05)
 
 		self.tmBtn = tk.Button( self, text = "Temperatura", fg="orange", bg="white", activebackground="white",font=self.btnFont,
-								command=lambda:self.showFrame(TemperatureMonitor))
+								command=lambda:self.showTempMonitor() )
 
 		self.tmBtn.place(x = self.screenWidth*0.60 + self.distBetweenBtnSecLine*4,
 						 y = self.labelHeight + self.distBetweenLines,
