@@ -5,9 +5,11 @@ import time
 
 class TemperatureMonitor(threading.Thread):
 			
-	def __init__(self):
+	def __init__(self, sW, sH ):
 		self.user = Temperature()
-			
+		self.sW = sW
+		self.sH = sH
+
 	def event(self, w):
 		self.run()
 			
@@ -18,35 +20,43 @@ class TemperatureMonitor(threading.Thread):
 		
 		self.tempView = Tk()
 		self.tempView.wm_title("Temperaturas da Casa")
-		self.tempView.geometry("350x350")   
+		self.tempView.geometry("380x380")   
 		self.tempView.protocol("WM_DELETE_WINDOW", self.close() )
 		self.tempView.configure(background="white")
-#		self.monitoring = Label( self.tempView ) 
-#		self.monitoring.place(x=0,
-#							  y=0,
-#							  width=350,
-#							  height=350)
 	
 		l1 = Label( self.tempView )
-		l1.place( x = 0,
-				  y = 0,
-				  width = 350,
-				  height = 50 )
+		l1.pack(side="top",fill="both",expand = True)
+
+		l2 = Label( self.tempView )
+		l2.pack(side="top",fill="both",expand = True)
+
+		l3 = Label( self.tempView )
+		l3.pack(side="top",fill="both",expand = True)
+
+		l4 = Label( self.tempView )
+		l4.pack(side="top",fill="both",expand = True)
+
+		l5 = Label( self.tempView )
+		l5.pack(side="top",fill="both",expand = True)
+
+		l6 = Label( self.tempView )
+		l6.pack(side="top",fill="both",expand = True)		
 		
-		#t = "Pscina: " + str( temps[0] ) + " Graus\n"
-			#t += "Banheira: " + str( temps[1] ) + " Graus\n"
-			#t += "Suite: " + str( temps[2] ) + " Graus\n"
-			#t += "Sala de estar: " + str( temps[3] ) + " Graus\n"
-			#t += "Sala de jogos: " + str( temps[4] ) + " Graus\n"
-			#t += "Dormitorio 1: " + str( temps[5] ) + " Graus\n" 
-			#t += "Dormitorio 2: " + str( temps[6] ) + " Graus\n"
+		l7 = Label( self.tempView )
+		l7.pack(side="top",fill="both",expand = True)
+
+		#se sobrar tempo arrumar um sistema de cores.
 		while True:
 			temps = self.user.readTemp()
 			
-			cor = int(temps[0], 16)
-			r = 255 / cor
-			l1.configure( text = "Piscina: " + str( cor ) + " Graus", bg= "#" + str(r)+str(g)+str(b) + "ff" )
+
+			l1.configure( text = "Piscina: " + str( int( temps[0], 16 ) ) + " Graus", bg= "white" )
+			l2.configure( text = "Banheira: " + str( int( temps[1], 16 ) ) + " Graus", bg= "white" )			
+			l3.configure( text = "Suite: " + str( int( temps[2], 16 ) ) + " Graus", bg= "white" )
+			l4.configure( text = "Sala de estar: " + str( int( temps[3], 16 ) ) + " Graus", bg= "white" )
+			l5.configure( text = "Sala de jogos: " + str( int( temps[4], 16 ) ) + " Graus", bg= "white" )
+			l6.configure( text = "Dormitorio 1: " + str( int( temps[5], 16 ) ) + " Graus", bg= "white" )
+			l7.configure( text = "Dormitorio 2: " + str( int( temps[6], 16 ) ) + " Graus", bg= "white" )
+
 			
-			self.monitoring.config(text=t )	
 			self.tempView.update()
-				
