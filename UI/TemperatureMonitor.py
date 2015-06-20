@@ -1,48 +1,41 @@
 from ..Resources.Temperature import Temperature
-from Tkinter import *
+import Tkinter as tk
+import tkFont as font
 import threading
 import time
 
-class TemperatureMonitor(threading.Thread):
+class TemperatureMonitor(tk.Frame, threading.Thread):
 			
-	def __init__(self, sW, sH ):
-		self.user = Temperature()
-		self.sW = sW
-		self.sH = sH
+	def __init__(self, parent, controller ):
+		tk.Frame.__init__(self,parent)
+		threading.Thread.__init__(self)
 
-	def event(self, w):
-		self.run()
-			
-	def close(self):
-		threading.Event().set()
+		self.user = Temperature()
+		self.start()
 			
 	def run(self):
-		
-		self.tempView = Tk()
-		self.tempView.wm_title("Temperaturas da Casa")
-		self.tempView.geometry("380x380")   
-		self.tempView.protocol("WM_DELETE_WINDOW", self.close() )
-		self.tempView.configure(background="white")
-	
-		l1 = Label( self.tempView )
+		l0 = tk.Label( self, text = "Temperatura da Casa", font = font.Font(weight="normal",size=20), bg="white")
+		l0.pack(side="top",fill="both",expand= True)
+
+		l1 = tk.Label( self )
 		l1.pack(side="top",fill="both",expand = True)
 
-		l2 = Label( self.tempView )
+		l2 = tk.Label( self )
 		l2.pack(side="top",fill="both",expand = True)
 
-		l3 = Label( self.tempView )
+		l3 = tk.Label( self )
 		l3.pack(side="top",fill="both",expand = True)
 
-		l4 = Label( self.tempView )
+		l4 = tk.Label( self )
 		l4.pack(side="top",fill="both",expand = True)
 
-		l5 = Label( self.tempView )
+		l5 = tk.Label( self )
 		l5.pack(side="top",fill="both",expand = True)
 
-		l6 = Label( self.tempView )
+		l6 = tk.Label( self )
 		l6.pack(side="top",fill="both",expand = True)		
 		
-		l7 = Label( self.tempView )
+		l7 = tk.Label( self )
 		l7.pack(side="top",fill="both",expand = True)
 
 		#se sobrar tempo arrumar um sistema de cores.
@@ -58,5 +51,6 @@ class TemperatureMonitor(threading.Thread):
 			l6.configure( text = "Dormitorio 1: " + str( int( temps[5], 16 ) ) + " Graus", bg= "white" )
 			l7.configure( text = "Dormitorio 2: " + str( int( temps[6], 16 ) ) + " Graus", bg= "white" )
 
-			
-			self.tempView.update()
+			self.update()
+
+			time.sleep(1)
