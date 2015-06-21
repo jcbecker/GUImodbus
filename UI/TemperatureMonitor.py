@@ -59,7 +59,7 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 				tree.place(	x=xi, y=yi,
 							width= xf, height= yf )
 
-				self.parent.update()
-				print "monitor de temperatura dormindo.."
-			time.sleep(10)
-		print "monitor de temperatura morto."
+				self.parent.update_idletasks()
+		#		print "monitor de temperatura dormindo.."
+				time.sleep(5)
+		#print "monitor de temperatura morto."

@@ -39,11 +39,11 @@ class LampMonitor(tk.Frame, threading.Thread):
 				self.lamp2()
 				self.lamp3()
 
-				self.parent.update()
-				print "monitoramento das lampadas dormindo..."
-			time.sleep(10)
+				self.parent.update_idletasks()
+		#		print "monitoramento das lampadas dormindo..."
+				time.sleep(5)
 
-		print "monitor de lampadas morto."
+		#print "monitor de lampadas morto."
 
 	def lamp3(self):
 		p = []

@@ -64,7 +64,7 @@ class Main(tk.Tk):
 		self.showing.stopQuery = False
 		if not self.tempMonitor.isAlive():
 			self.tempMonitor.start()
-		self.tempMonitor.tkraise()
+		#self.tempMonitor.tkraise()
 
 	def showLampMonitor(self):
 
@@ -75,7 +75,7 @@ class Main(tk.Tk):
 		self.lampMonitor.stopQuery = False
 		if not self.lampMonitor.isAlive():
 			self.lampMonitor.start()
-		self.lampMonitor.tkraise()
+		#self.lampMonitor.tkraise()
 
 	def line1(self):
 		self.monitoring = tk.Label(self, text="Monitoramento", bg="white",font=self.labelFont)
