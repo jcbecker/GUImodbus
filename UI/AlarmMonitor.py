@@ -21,6 +21,11 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		self.stopQuery = False
 		self.exit = False
 
+	def cleanBrothers(self):
+		children = self.parent.winfo_children()
+		for c in children:
+				c.destroy()
+
 	def run(self):
 
 		xi=self.parent.winfo_x()+400
@@ -30,12 +35,17 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		while not self.exit:
 
 			if not self.stopQuery:
-				children = self.parent.winfo_children()
-				for c in children:
-					c.destroy()
+				self.cleanBrothers()
+
+				try:
+					onOFF = self.user.checkONOFF()
+				except IOError as e:
+					time.sleep(1)
+					self.cleanBrothers()
+					onOFF = self.user.checkONOFF()
 
 				msg = "O alarme geral está "
-				if self.user.checkONOFF():
+				if onOFF:
 					msg = msg + "ligado."
 				else:
 					msg = msg + "desligado."
@@ -46,9 +56,16 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 								y=yi,
 						 		width=xf,
 								height=yf)
-				#ag.pack()
+
+				try:
+					fired = self.user.fired()
+				except IOError as e:
+					time.sleep(1)
+					self.cleanBrothers()
+					onOFF = self.user.fired()
+
 				msg = "O alarme"
-				if not self.user.fired():
+				if not fired:
 					msg = msg + " não"
 				
 				msg = msg + " está disparado."

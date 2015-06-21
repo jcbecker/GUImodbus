@@ -20,6 +20,11 @@ class LampMonitor(tk.Frame, threading.Thread):
 		self.stopQuery = False
 		self.exit = False
 
+	def cleanBrothers(self):
+		children = self.parent.winfo_children()
+		for c in children:
+				c.destroy()
+
 	def run(self):
 		self.xi1=self.parent.winfo_x()+50
 		self.yi1=self.parent.winfo_y()-300
@@ -29,11 +34,14 @@ class LampMonitor(tk.Frame, threading.Thread):
 		while not self.exit:
 
 			if self.stopQuery is False:
-				children = self.parent.winfo_children()
-				for widget in children:
-					widget.destroy()
+				self.cleanBrothers()
 
-				self.state = self.user.monitLamps()
+				try:
+					self.state = self.user.monitLamps()
+				except IOError as e:
+					time.sleep(1)
+					self.cleanBrothers()
+					self.state = self.user.monitLamps()
 
 				self.lamp1()
 				self.lamp2()

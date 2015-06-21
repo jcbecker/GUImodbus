@@ -21,7 +21,11 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 		self.stopQuery = False
 		self.exit = False
 
-			
+	def cleanBrothers(self):
+		children = self.parent.winfo_children()
+		for c in children:
+				c.destroy()
+
 	def run(self):
 		self.xi=self.parent.winfo_x()+300
 		self.yi=self.parent.winfo_y()-300
@@ -30,14 +34,13 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 		
 		while not self.exit:
 			if not self.stopQuery:
-				children = self.parent.winfo_children()
-				for widget in children:
-					widget.destroy()
+				self.cleanBrothers()
 
 				try:	
 					temps = self.user.readTemp()
 				except IOError as e:
 					time.sleep(1)
+					self.cleanBrothers()
 					temps = self.user.readTemp()
 
 				tree = ttk.Treeview(self.parent, columns=("Lugar","Temperatura"),
