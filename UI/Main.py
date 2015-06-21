@@ -1,7 +1,6 @@
-import matplotlib.animation as animation
-import matplotlib.pyplot as plt
 import tkFont as font
 import Tkinter as tk
+import threading
 
 from TemperatureMonitor import TemperatureMonitor 
 from LampMonitor import LampMonitor
@@ -35,23 +34,35 @@ class Main(tk.Tk):
 		self.line3()
 		self.line4()
 
-		self.actions = tk.Frame(height = self.screenHeight*0.63,width=self.screenWidth)
+		self.actions = tk.Frame(height = self.screenHeight*0.63,width=self.screenWidth,bg="white")
 		self.actions.pack(side="bottom", fill="x", expand = False)
 		self.actions.grid_rowconfigure(0,weight=1)		
 		self.actions.grid_columnconfigure(0,weight=1)
 
 		self.showing = None
 		self.tempMonitor = TemperatureMonitor(self.actions,self)
-
+		self.lampMonitor = LampMonitor(self.actions,self)
 
 	def showTempMonitor(self):
 		if self.showing is not None:
 			self.showing.stopQuery = True
 
 		self.showing = self.tempMonitor
-		self.tempMonitor.start()
+		self.showing.stopQuery = False
+		if not self.tempMonitor.isAlive():
+			self.tempMonitor.start()
 		self.tempMonitor.tkraise()
-	
+
+	def showLampMonitor(self):
+
+		if self.showing is not None:
+			self.showing.stopQuery = True
+
+		self.showing = self.lampMonitor
+		self.lampMonitor.stopQuery = False
+		if not self.lampMonitor.isAlive():
+			self.lampMonitor.start()
+		self.lampMonitor.tkraise()
 
 	def line1(self):
 		self.monitoring = tk.Label(self, text="Monitoramento", bg="white",font=self.labelFont)
@@ -74,7 +85,8 @@ class Main(tk.Tk):
 						 width= self.screenWidth*0.20,
 						 height= self.screenHeight*0.05)
 
-		self.imBtn = tk.Button( self, text = "Iluminacao", fg="green", bg="white", activebackground="white",font=self.btnFont)
+		self.imBtn = tk.Button( self, text = "Iluminacao", fg="green", bg="white", activebackground="white",font=self.btnFont,
+								command=lambda:self.showLampMonitor())
 		self.imBtn.place(x = self.screenWidth*0.40 + self.distBetweenBtnSecLine*3,
 						 y = self.labelHeight + + self.distBetweenLines,
 						 width = self.screenWidth*0.20,
