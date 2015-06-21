@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+	#!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 
 from ..Resources.Temperature import Temperature
@@ -34,7 +34,12 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 				for widget in children:
 					widget.destroy()
 
-				temps = self.user.readTemp()
+				try:	
+					temps = self.user.readTemp()
+				except IOError as e:
+					time.sleep(1)
+					temps = self.user.readTemp()
+
 				tree = ttk.Treeview(self.parent, columns=("Lugar","Temperatura"),
 									selectmode="extended",height=5)
 				tree["show"] = "headings"
