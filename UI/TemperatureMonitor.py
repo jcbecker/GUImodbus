@@ -19,6 +19,7 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 		self.parent = parent
 		self.ctrl = controller
 		self.stopQuery = False
+		self.exit = False
 			
 	def run(self):
 		
@@ -26,7 +27,7 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 		yi=self.parent.winfo_y()-300
 		xf=2*self.parent.winfo_x()+700
 		yf=self.parent.winfo_y()+40
-		while True:
+		while not self.exit:
 			if not self.stopQuery:
 				children = self.parent.winfo_children()
 				for widget in children:
@@ -34,12 +35,13 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 
 				temps = self.user.readTemp()
 				tree = ttk.Treeview(self.parent, columns=("Lugar","Temperatura"),
-									selectmode="extended",height=20)
+									selectmode="extended",height=5)
 				tree["show"] = "headings"
-				tree.heading("#1", text="Lugar", anchor="center")
+				tree.heading("#1", text="Lugar", anchor="center" )
 				tree.heading("#2", text="Temperatura", anchor="center")
 				tree.column("#1", anchor="center", width=120)
 				tree.column("#2", anchor="center", width=120)
+
 				tree.insert("",0,text="", 
 							value=( "Piscina", str( int( temps[0], 16 ) ) + "°C" ) ) 
 				tree.insert("",1,text="", 
