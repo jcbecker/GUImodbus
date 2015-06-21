@@ -20,13 +20,14 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 		self.ctrl = controller
 		self.stopQuery = False
 		self.exit = False
+
 			
 	def run(self):
+		self.xi=self.parent.winfo_x()+300
+		self.yi=self.parent.winfo_y()-300
+		self.xf=2*self.parent.winfo_x()+700
+		self.yf=self.parent.winfo_y()+40
 		
-		xi=self.parent.winfo_x()+300
-		yi=self.parent.winfo_y()-300
-		xf=2*self.parent.winfo_x()+700
-		yf=self.parent.winfo_y()+40
 		while not self.exit:
 			if not self.stopQuery:
 				children = self.parent.winfo_children()
@@ -56,8 +57,8 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 							value=( "Dormitorio 1", str( int( temps[5], 16 ) ) + "°C" ) ) 
 				tree.insert("",6,text="", 
 							value=( "Dormitorio 2", str( int( temps[6], 16 ) ) + "°C" ) ) 
-				tree.place(	x=xi, y=yi,
-							width= xf, height= yf )
+				tree.place(	x=self.xi, y=self.yi,
+							width= self.xf, height= self.yf )
 
 				self.parent.update_idletasks()
 		#		print "monitor de temperatura dormindo.."

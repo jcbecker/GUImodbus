@@ -8,6 +8,7 @@ import threading
 
 from TemperatureMonitor import TemperatureMonitor 
 from LampMonitor import LampMonitor
+from AlarmMonitor import AlarmMonitor
 
 class Main(tk.Tk):
 
@@ -50,32 +51,44 @@ class Main(tk.Tk):
 		self.showing = None
 		self.tempMonitor = TemperatureMonitor(self.actions,self)
 		self.lampMonitor = LampMonitor(self.actions,self)
+		self.alarmMonitor = AlarmMonitor(self.actions,self)
 
 	def quit(self):
 		self.tempMonitor.exit = True
 		self.lampMonitor.exit = True
+		self.alarmMonitor.exit = True
 		self.destroy()
 
-	def showTempMonitor(self):
+	def stopCurrentMonitor(self):
 		if self.showing is not None:
 			self.showing.stopQuery = True
 
-		self.showing = self.tempMonitor
-		self.showing.stopQuery = False
-		if not self.tempMonitor.isAlive():
-			self.tempMonitor.start()
-		#self.tempMonitor.tkraise()
+	def showTempMonitor(self):
+		if self.showing != self.tempMonitor:
+			self.stopCurrentMonitor()
+
+			self.showing = self.tempMonitor
+			self.showing.stopQuery = False
+			if not self.tempMonitor.isAlive():
+				self.tempMonitor.start()
 
 	def showLampMonitor(self):
+		if self.showing != self.lampMonitor:
+			self.stopCurrentMonitor()
 
-		if self.showing is not None:
-			self.showing.stopQuery = True
+			self.showing = self.lampMonitor
+			self.lampMonitor.stopQuery = False
+			if not self.lampMonitor.isAlive():
+				self.lampMonitor.start()
 
-		self.showing = self.lampMonitor
-		self.lampMonitor.stopQuery = False
-		if not self.lampMonitor.isAlive():
-			self.lampMonitor.start()
-		#self.lampMonitor.tkraise()
+	def showAlarmMonitor(self):
+		if self.showing != self.alarmMonitor:
+			self.stopCurrentMonitor()
+
+			self.showing = self.alarmMonitor
+			self.alarmMonitor.stopQuery = False
+			if not self.alarmMonitor.isAlive():
+				self.alarmMonitor.start()
 
 	def line1(self):
 		self.monitoring = tk.Label(self, text="Monitoramento", bg="white",font=self.labelFont)
@@ -92,7 +105,8 @@ class Main(tk.Tk):
 						 width=self.screenWidth*0.20,
 						 height=self.screenHeight*0.05)
 
-		self.amBtn = tk.Button( self, text = "Alarme", fg="red", bg="white", activebackground="white",font=self.btnFont)
+		self.amBtn = tk.Button( self, text = "Alarme", fg="red", bg="white", activebackground="white",font=self.btnFont,
+								command=lambda:self.showAlarmMonitor())
 		self.amBtn.place(x = self.screenWidth*0.20 + self.distBetweenBtnSecLine*2,
 						 y = self.labelHeight + + self.distBetweenLines,
 						 width= self.screenWidth*0.20,
