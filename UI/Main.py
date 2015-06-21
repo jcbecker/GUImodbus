@@ -1,5 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+
 import tkFont as font
 import Tkinter as tk
+import ttk
 import threading
 
 from TemperatureMonitor import TemperatureMonitor 
@@ -15,6 +19,7 @@ class Main(tk.Tk):
 		self.geometry(str(self.screenWidth)+"x"+str(self.screenHeight))
 		self.wm_title("Controle da casa")
 		self.configure(background="white")
+		self.protocol('WM_DELETE_WINDOW', self.quit) 
 
 		#distancia entre linhas.
 		self.distBetweenLines = self.screenHeight*0.01
@@ -34,6 +39,9 @@ class Main(tk.Tk):
 		self.line3()
 		self.line4()
 
+		style = ttk.Style(self)
+		style.configure('Treeview', rowheight=40, font = font.Font(weight="normal",size=16))
+
 		self.actions = tk.Frame(height = self.screenHeight*0.63,width=self.screenWidth,bg="white")
 		self.actions.pack(side="bottom", fill="x", expand = False)
 		self.actions.grid_rowconfigure(0,weight=1)		
@@ -42,6 +50,11 @@ class Main(tk.Tk):
 		self.showing = None
 		self.tempMonitor = TemperatureMonitor(self.actions,self)
 		self.lampMonitor = LampMonitor(self.actions,self)
+
+	def quit(self):
+		self.tempMonitor.exit = True
+		self.lampMonitor.exit = True
+		self.destroy()
 
 	def showTempMonitor(self):
 		if self.showing is not None:
