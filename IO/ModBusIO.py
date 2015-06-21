@@ -1,6 +1,10 @@
 from serial import Serial
+import threading
 
-serialPort = Serial(port = "/dev/pts/6", baudrate = 9600, timeout = 1)
+lock = threading.RLock()
+lock.acquire()
+serialPort = Serial(port = "/dev/pts/17", baudrate = 9600, timeout = 1)
+lock.release()
 
 #nao instancie essa classe.
 class ModBusIO:
