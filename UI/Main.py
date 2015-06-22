@@ -7,8 +7,11 @@ import ttk
 import threading
 
 from TemperatureMonitor import TemperatureMonitor 
-from LampMonitor import LampMonitor
+from WaterMonitor import WaterMonitor
 from AlarmMonitor import AlarmMonitor
+from LampMonitor import LampMonitor
+
+from ..IO.ModBusWriter import ModBusWriter
 
 class Main(tk.Tk):
 
@@ -50,13 +53,18 @@ class Main(tk.Tk):
 
 		self.showing = None
 		self.tempMonitor = TemperatureMonitor(self.actions,self)
-		self.lampMonitor = LampMonitor(self.actions,self)
+		self.waterMonitor = WaterMonitor(self.actions,self)
 		self.alarmMonitor = AlarmMonitor(self.actions,self)
+		self.lampMonitor = LampMonitor(self.actions,self)
+
+		mw = ModBusWriter()
+		mw.write("0007", "0002")
 
 	def quit(self):
+		self.alarmMonitor.exit = True
+		self.waterMonitor.exit = True
 		self.tempMonitor.exit = True
 		self.lampMonitor.exit = True
-		self.alarmMonitor.exit = True
 		self.destroy()
 
 	def stopCurrentMonitor(self):
@@ -90,6 +98,15 @@ class Main(tk.Tk):
 			if not self.alarmMonitor.isAlive():
 				self.alarmMonitor.start()
 
+	def showWaterMonitor(self):
+		if self.showing != self.waterMonitor:
+			self.stopCurrentMonitor()
+
+			self.showing = self.waterMonitor
+			self.waterMonitor.stopQuery = False
+			if not self.waterMonitor.isAlive():
+				self.waterMonitor.start()
+
 	def line1(self):
 		self.monitoring = tk.Label(self, text="Monitoramento", bg="white",font=self.labelFont)
 		self.monitoring.place(x=0, 
@@ -99,7 +116,9 @@ class Main(tk.Tk):
 
 	def line2(self):
 
-		self.wmBtn = tk.Button( self, text = "Água", fg="blue", bg="white", activebackground="white",font=self.btnFont)
+		self.wmBtn = tk.Button( self, text = "Água", fg="blue", bg="white", 
+								activebackground="white",font=self.btnFont,
+								command=lambda:self.showWaterMonitor())
 		self.wmBtn.place(x=self.distBetweenBtnSecLine,
 						 y=self.labelHeight + self.distBetweenLines,
 						 width=self.screenWidth*0.20,
@@ -125,8 +144,7 @@ class Main(tk.Tk):
 		self.tmBtn.place(x = self.screenWidth*0.60 + self.distBetweenBtnSecLine*4,
 						 y = self.labelHeight + self.distBetweenLines,
 						 width = self.screenWidth*0.20,
-						 height = self.screenHeight*0.05)
-						 
+						 height = self.screenHeight*0.05)			 
 					
 	def line3(self):
 
