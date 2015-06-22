@@ -89,26 +89,26 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 				p.append("Dormitório 1")
 				p.append("Dormitório 2")
 
-				canPlace = True
-				states = inf[2]
 				try:
+					states = inf[2]
 					for i in range(8):
 						of = "OFF"
 						if (states&(1 << i )) != 0:
 							of = "ON"
 
 						tree.insert("",i,text="", value=( p[i], of ) )
-				except Exception as e:
-					canPlace = False
 
-				if canPlace:
 					tree.place(
 								x = xi,
 								y = yf+20,
 								width = xf,
 								height = yf+250
 								)
-				self.parent.update_idletasks()
+
+					self.parent.update_idletasks()
+				except Exception as e:
+					pass
+
 				#print "Monitor do alarme dormindo..."
 				time.sleep(5)
 			#print "Monitor do alarme morto."
