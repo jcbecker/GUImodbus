@@ -61,7 +61,10 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 					fired = self.user.fired()
 				except IOError as e:
 					time.sleep(1)
-					onOFF = self.user.fired()
+					try:
+						onOFF = self.user.fired()
+					except IOError as e:
+						pass
 
 				color = "red"
 				msg = "O alarme"
@@ -105,22 +108,23 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 				p.append("Dormitório 2")
 
 				canPlace = True
-				for i in range(8):
-					of = "OFF"
-					if (states&(1 << i )) != 0:
-						of = "ON"
+				try:
+					for i in range(8):
+						of = "OFF"
+						if (states&(1 << i )) != 0:
+							of = "ON"
 
-					try:
 						tree.insert("",i,text="", value=( p[i], of ) )
-					except Exception as e:
-						canPlace = False
+				except Exception as e:
+					canPlace = False
 
-				tree.place(
-							x = xi,
-							y = yf+20,
-							width = xf,
-							height = yf+250
-							)
+				if canPlace:
+					tree.place(
+								x = xi,
+								y = yf+20,
+								width = xf,
+								height = yf+250
+								)
 				self.parent.update_idletasks()
 				#print "Monitor do alarme dormindo..."
 				time.sleep(5)

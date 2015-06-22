@@ -46,11 +46,14 @@ class LampMonitor(tk.Frame, threading.Thread):
 					except IOError as e:
 						pass
 
-				self.lamp1()
-				self.lamp2()
-				self.lamp3()
-
-				self.parent.update_idletasks()
+				try:
+					self.lamp1()
+					self.lamp2()
+					self.lamp3()
+					self.parent.update_idletasks()
+				except Exception as e:
+					pass
+				
 		#		print "monitoramento das lampadas dormindo..."
 				time.sleep(5)
 
