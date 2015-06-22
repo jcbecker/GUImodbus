@@ -53,9 +53,9 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 				ag = tk.Label(self.parent, text= msg, bg="white",
 									font = font.Font(weight="normal",size=16))
 				ag.place(x=xi,
-								y=yi-50,
-						 		width=xf,
-								height=yf-20)
+							y=yi-50,
+						 	width=xf,
+							height=yf-20)
 
 				color = "red"
 				msg = "O alarme"
@@ -67,9 +67,9 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 				ad = tk.Label(self.parent, text = msg, bg = color,
 									font = font.Font(weight="normal",size=16))
 				ad.place(x=xi,
-									y=yf-30,
-									width=xf,
-									height=yf-20)
+							y=yf-30,
+							width=xf,
+							height=yf-20)
 				
 				tree = ttk.Treeview(self.parent, columns=("Lugar","Estado"),
 									selectmode="extended",height=5)
