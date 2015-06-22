@@ -11,6 +11,8 @@ class Alarm:
 	def __init__(self):		
 		self.writer = ModBusWriter()
 		self.reader = ModBusReader()
+
+		self.answer = None
 		
 	#usa o bit 0 do registrador 8 para
 	#ligar ou desligar o alarme da casa
@@ -49,51 +51,26 @@ class Alarm:
 			return self.state
 		
 		raise IOError("AlarmAnswerException")
-	
-	#usa o bit 0 do registrador 9 para 
-	#verificar se o alarme esta ligado ou desligado
-	#retorna true se o alarme estiver ligado
-	#retorna false se o alarme estiver desligado
-	def checkONOFF( self ):
-		monitReg = "0009"
-		regNumber = "0001"
-		
-		answer = self.reader.read( monitReg, regNumber )
 
-		if answer[5]+answer[6] != "02":
+	def readAnswer(self):
+		monitReg = "0009"
+		regNumber = "0002"
+
+		self.answer = self.reader.read( monitReg, regNumber )
+
+		if self.answer[5]+self.answer[6] != "04":
 			raise IOError("AlarmAnswerException")	
-
-		regData = int( answer[7:11], 16 )
-
-		return (regData & 1) != 0
-		
 	
-	#usa o bit 1 do registrador 9 para
-	#verificar se o alarme esta disparado
-	#se o mesmo esta disparado retorna true
-	#senao false
-	def fired( self ):	
-		monitReg = "0009"
-		regNumber = "0001"
-		
-		answer = self.reader.read(monitReg, regNumber)
-		
-		if answer[5]+answer[6] != "02":
-			raise IOError("AlarmAnswerException")
 
-		#nao consegui fazer operacao logica em hexa.
-		return ( int( answer[7:11], 16 ) & 2 ) != 0
+	#fazer todas as buscas de uma vez só.
+	def alarmInf( self ):
+		self.readAnswer()
 
-	#retorna o stuatus do alarme em
-	#todos os lugares.
-	def checkAlarm(self):
-		
-		monitReg = "000A"
-		regNumber = "0001"
+		inf = []
+		reg9Data = int( self.answer[7:11], 16 )
 
-		answer = self.reader.read( monitReg, regNumber )
-	
-		if answer[5]+answer[6] != "02":
-			raise IOError("AlarmAnswerException")
-			
-		return int( answer[7:11], 16 )
+		inf.append((reg9Data & 1) != 0)
+		inf.append((reg9Data & 2) != 0)
+		inf.append(int( self.answer[11:15], 16 ))
+
+		return inf
