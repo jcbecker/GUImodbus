@@ -30,7 +30,7 @@ class Water:
 		
 		waterState = (int(answer[15:19], 16))
 		for i in range(2,6):
-			waters.append( (waterState & (1 << i)) == 0 )
+			waters.append( (waterState & (1 << i)) != 0 )
 				
 		return waters
 		
