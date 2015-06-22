@@ -23,7 +23,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 	def cleanBrothers(self):
 		children = self.parent.winfo_children()
 		for c in children:
-				c.destroy()
+			c.destroy()
 
 	def run(self):
 		self.xi1=self.parent.winfo_x()+50
@@ -41,7 +41,10 @@ class LampMonitor(tk.Frame, threading.Thread):
 				except IOError as e:
 					time.sleep(1)
 					self.cleanBrothers()
-					self.state = self.user.monitLamps()
+					try:
+						self.state = self.user.monitLamps()
+					except IOError as e:
+						pass
 
 				self.lamp1()
 				self.lamp2()

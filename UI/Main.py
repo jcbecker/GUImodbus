@@ -99,7 +99,7 @@ class Main(tk.Tk):
 
 	def line2(self):
 
-		self.wmBtn = tk.Button( self, text = "Agua", fg="blue", bg="white", activebackground="white",font=self.btnFont)
+		self.wmBtn = tk.Button( self, text = "Água", fg="blue", bg="white", activebackground="white",font=self.btnFont)
 		self.wmBtn.place(x=self.distBetweenBtnSecLine,
 						 y=self.labelHeight + self.distBetweenLines,
 						 width=self.screenWidth*0.20,
@@ -112,7 +112,7 @@ class Main(tk.Tk):
 						 width= self.screenWidth*0.20,
 						 height= self.screenHeight*0.05)
 
-		self.imBtn = tk.Button( self, text = "Iluminacao", fg="green", bg="white", activebackground="white",font=self.btnFont,
+		self.imBtn = tk.Button( self, text = "Iluminação", fg="green", bg="white", activebackground="white",font=self.btnFont,
 								command=lambda:self.showLampMonitor())
 		self.imBtn.place(x = self.screenWidth*0.40 + self.distBetweenBtnSecLine*3,
 						 y = self.labelHeight + + self.distBetweenLines,
@@ -138,7 +138,7 @@ class Main(tk.Tk):
 					   
 	def line4(self):
 
-		self.waBtn = tk.Button( self, text = "Agua", fg="blue", bg="white", activebackground="white",font=self.btnFont)
+		self.waBtn = tk.Button( self, text = "Água", fg="blue", bg="white", activebackground="white",font=self.btnFont)
 		self.waBtn.place(x = self.distBetweenBtnFourthLine,
 						 y = 3*(self.labelHeight + self.distBetweenLines),
 						 width = self.screenWidth*0.20,
@@ -150,7 +150,7 @@ class Main(tk.Tk):
 						 width = self.screenWidth*0.20,
 						 height = self.screenHeight*0.05)
 
-		self.iaBtn = tk.Button( self, text = "Iluminacao", fg="green", bg="white", activebackground="white",font=self.btnFont)
+		self.iaBtn = tk.Button( self, text = "Iluminação", fg="green", bg="white", activebackground="white",font=self.btnFont)
 		self.iaBtn.place(x = self.screenWidth*0.4 + self.distBetweenBtnFourthLine*3,
 						 y = 3*(self.labelHeight + self.distBetweenLines),
 						 width = self.screenWidth*0.20,

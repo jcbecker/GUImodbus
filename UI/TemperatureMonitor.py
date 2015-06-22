@@ -1,4 +1,4 @@
-	#!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 
 from ..Resources.Temperature import Temperature
@@ -24,7 +24,7 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 	def cleanBrothers(self):
 		children = self.parent.winfo_children()
 		for c in children:
-				c.destroy()
+			c.destroy()
 
 	def run(self):
 		self.xi=self.parent.winfo_x()+300
@@ -41,7 +41,10 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 				except IOError as e:
 					time.sleep(1)
 					self.cleanBrothers()
-					temps = self.user.readTemp()
+					try:
+						temps = self.user.readTemp()
+					except IOError as e:
+						pass
 
 				tree = ttk.Treeview(self.parent, columns=("Lugar","Temperatura"),
 									selectmode="extended",height=5)
