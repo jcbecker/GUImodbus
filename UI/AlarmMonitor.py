@@ -38,14 +38,14 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 				self.cleanBrothers()
 
 				try:
-					onOFF = self.user.checkONOFF()
+					inf = self.user.alarmInf()
 				except IOError as e:
 					time.sleep(1)
 					self.cleanBrothers()
-					onOFF = self.user.checkONOFF()
+					inf = self.user.alarmInf()
 
 				msg = "O alarme geral está "
-				if onOFF:
+				if inf[0]:
 					msg = msg + "ligado."
 				else:
 					msg = msg + "desligado."
@@ -57,18 +57,9 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 						 		width=xf,
 								height=yf-20)
 
-				try:
-					fired = self.user.fired()
-				except IOError as e:
-					time.sleep(1)
-					try:
-						onOFF = self.user.fired()
-					except IOError as e:
-						pass
-
 				color = "red"
 				msg = "O alarme"
-				if not fired:
+				if not inf[1]:
 					color = "white"
 					msg = msg + " não"
 				
@@ -79,7 +70,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 									y=yf-30,
 									width=xf,
 									height=yf-20)
-				#ad.pack()
+				
 				tree = ttk.Treeview(self.parent, columns=("Lugar","Estado"),
 									selectmode="extended",height=5)
 				tree["show"] = "headings"
@@ -87,15 +78,6 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 				tree.heading("#2", text="Estado", anchor="center")
 				tree.column("#1", anchor="center", width=120)
 				tree.column("#2", anchor="center", width=120)
-
-				try:
-					states = self.user.checkAlarm()
-				except IOError as e:
-					time.sleep(1)
-					try:
-						states = self.user.checkAlarm()
-					except IOError as e:
-						pass
 
 				p = []
 				p.append("Garagem")
@@ -108,6 +90,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 				p.append("Dormitório 2")
 
 				canPlace = True
+				states = inf[2]
 				try:
 					for i in range(8):
 						of = "OFF"
