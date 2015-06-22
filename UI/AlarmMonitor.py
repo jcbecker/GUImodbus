@@ -50,9 +50,9 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 				else:
 					msg = msg + "desligado."
 
-				self.ag = tk.Label(self.parent, text= msg, bg="white",
+				ag = tk.Label(self.parent, text= msg, bg="white",
 									font = font.Font(weight="normal",size=16))
-				self.ag.place(x=xi,
+				ag.place(x=xi,
 								y=yi-50,
 						 		width=xf,
 								height=yf-20)
@@ -64,9 +64,9 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 					msg = msg + " não"
 				
 				msg = msg + " está disparado."
-				self.ad = tk.Label(self.parent, text = msg, bg = color,
+				ad = tk.Label(self.parent, text = msg, bg = color,
 									font = font.Font(weight="normal",size=16))
-				self.ad.place(x=xi,
+				ad.place(x=xi,
 									y=yf-30,
 									width=xf,
 									height=yf-20)
