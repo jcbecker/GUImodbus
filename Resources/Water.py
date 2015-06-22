@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+
 from ..IO.ModBusReader import ModBusReader
 from ..IO.ModBusWriter import ModBusWriter
 
@@ -26,25 +29,9 @@ class Water:
 		waters.append(int(answer[7:11], 16))
 		waterState = (int(answer[15:19], 16))
 		
-		if (waterState & 4) == 0 :
-			waters.append(0)
-		else:
-			waters.append(1)
-		
-		if (waterState & 8) == 0:
-			waters.append(0)
-		else:
-			waters.append(1)
-		
-		if (waterState & 16) == 0:
-			waters.append(0)
-		else:
-			waters.append(1)
-		
-		if (waterState & 32) == 0:
-			waters.append(0)
-		else:
-			waters.append(1)
+		for i in range(2,6):
+			waters.appent( (waterState & (1 << i)) == 0 )
+				
 		
 		return waters
 		
