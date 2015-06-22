@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+
 from ..IO.ModBusWriter import ModBusWriter
 from ..IO.ModBusReader import ModBusReader
 
@@ -8,15 +11,6 @@ class Alarm:
 	def __init__(self):		
 		self.writer = ModBusWriter()
 		self.reader = ModBusReader()
-		
-		self.monitRegBits['garagem']     = 0
-		self.monitRegBits['piscina1']    = 1
-		self.monitRegBits['cozinha']     = 2
-		self.monitRegBits['saladeestar'] = 3
-		self.monitRegBits['saladejogos'] = 4
-		self.monitRegBits['suite'] 	  	 = 5
-		self.monitRegBits['dormitorio1'] = 6
-		self.monitRegBits['dormitorio2'] = 7
 		
 	#usa o bit 0 do registrador 8 para
 	#ligar ou desligar o alarme da casa
@@ -57,8 +51,7 @@ class Alarm:
 		raise IOError("AlarmAnswerException")
 	
 	#usa o bit 0 do registrador 9 para 
-	#verificar se o alarme esta ligado ou desligado.
-	#verifica se o alarme esta ligado ou desligado.
+	#verificar se o alarme esta ligado ou desligado
 	#retorna true se o alarme estiver ligado
 	#retorna false se o alarme estiver desligado
 	def checkONOFF( self ):
@@ -72,7 +65,7 @@ class Alarm:
 
 		regData = int( answer[7:11], 16 )
 
-		return regData & 1 != 0
+		return (regData & 1) != 0
 		
 	
 	#usa o bit 1 do registrador 9 para
@@ -91,23 +84,16 @@ class Alarm:
 		#nao consegui fazer operacao logica em hexa.
 		return ( int( answer[7:11], 16 ) & 2 ) != 0
 
-	#recebe um lugar, verifica se o mesmo
-	#possui bit de monitoramento de alarme
-	#se possui verifica se o alarme esta
-	#ligado ou nao.
-	def checkAlarm(self, place ):
+	#retorna o stuatus do alarme em
+	#todos os lugares.
+	def checkAlarm(self):
 		
-		if self.monitRegBits.has_key( place ):
-			monitReg = "000A"
-			regNumber = "0001"
+		monitReg = "000A"
+		regNumber = "0001"
 
-			answer = self.reader.read( monitReg, regNumber )
+		answer = self.reader.read( monitReg, regNumber )
 	
-			if answer[5]+answer[6] != "02":
-				raise IOError("AlarmAnswerException")
-
-			regData = int( answer[7:11], 16 )
+		if answer[5]+answer[6] != "02":
+			raise IOError("AlarmAnswerException")
 			
-			return regData&( 1 << self.monitRegBits[place] ) != 0
-		else: 
-			return None
+		return int( answer[7:11], 16 )
