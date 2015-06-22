@@ -23,16 +23,15 @@ class Water:
 		if answer[5:7] != "06":
 			raise IOError ("Wrong answer exception")
 			
-		print answer
+		#print answer
 		
 		waters = []
 		waters.append(int(answer[7:11], 16))
+		
 		waterState = (int(answer[15:19], 16))
-		
 		for i in range(2,6):
-			waters.appent( (waterState & (1 << i)) == 0 )
+			waters.append( (waterState & (1 << i)) == 0 )
 				
-		
 		return waters
 		
 		
