@@ -6,8 +6,6 @@ from ..IO.ModBusReader import ModBusReader
 
 class Alarm:
 
-	monitRegBits = {}
-
 	def __init__(self):		
 		self.writer = ModBusWriter()
 		self.reader = ModBusReader()

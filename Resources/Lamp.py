@@ -6,10 +6,6 @@ from ..IO.ModBusWriter import ModBusWriter
 
 class Lamp:
 
-	comReg14 = {}
-	comReg15 = {}
-	comReg16 = {}
-
 	def __init__(self):
 		self.reader = ModBusReader()
 		self.writer = ModBusWriter()

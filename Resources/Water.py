@@ -6,9 +6,6 @@ from ..IO.ModBusWriter import ModBusWriter
 
 class Water:
 
-	comReg7 = {}
-	comReg9 = {}
-
 	def __init__(self):	
 		self.reg = {}	
 		self.reader = ModBusReader()
