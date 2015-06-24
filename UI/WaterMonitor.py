@@ -9,6 +9,8 @@ import ttk
 import threading
 import time
 
+from ..IO.ModBusWriter import ModBusWriter
+
 class WaterMonitor(tk.Frame,threading.Thread):
 
 	def __init__(self, parent, controller ):
@@ -21,70 +23,87 @@ class WaterMonitor(tk.Frame,threading.Thread):
 		self.stopQuery = False
 		self.exit = False
 
-	def cleanBrothers(self):
-		children = self.parent.winfo_children()
-		for c in children:
-			c.destroy()
+		self.xi=self.parent.winfo_x()
+		self.yi=self.parent.winfo_y()
+
+		self.buildLevelLabel()
+		self.buildTree()
+
+	def buildLevelLabel(self):
+		self.bathLevel = tk.Label(self.parent, text= " ", bg="white",
+									font = font.Font(weight="normal",size=16))
+				
+		self.bathLevel.place(x=self.xi+410,
+								y=self.yi,
+				 				width=self.xi+500,
+								height=self.yi+50)
+
+		self.bathID = self.bathLevel.place_info()
+		self.place_forget()
+
+	def buildTree(self):
+		self.tree = ttk.Treeview(self.parent, columns=("Lugar","Estado"),
+									selectmode="extended",height=5)
+		self.tree["show"] = "headings"
+		self.tree.heading("#1", text="Lugar", anchor="center" )
+		self.tree.heading("#2", text="Estado", anchor="center")
+		self.tree.column("#1", anchor="center", width=120)
+		self.tree.column("#2", anchor="center", width=120)	
+
+		p = []
+		p.append("Água quenta da banheira")
+		p.append("Água fria da banheira")
+		p.append("Água quenta da piscina")
+		p.append("Água fria da banheira")
+
+		for i in range(0,4):
+			self.tree.insert("",i,text="", value=( p[i], " "))
+
+		self.tree.place(x=self.xi+400,
+						y=self.yi+51,
+						width=self.xi+500,
+						height=self.yi+200)
+
+		self.tID = self.tree.place_info()
+		self.tree.place_forget()
+
+	def showWidgets(self):
+		self.bathLevel.place( self.bathID )
+		self.tree.place( self.tID )
+
+	def hideWidgets(self):
+		self.bathLevel.place_forget()
+		self.tree.place_forget()
 
 	def run(self):
-
-		xi=self.parent.winfo_x()+400
-		yi=self.parent.winfo_y()-300
-		xf=2*self.parent.winfo_x()+550
-		yf=self.parent.winfo_y()-250
+		
 		while not self.exit:
 			if not self.stopQuery:
-				self.cleanBrothers()
-
 				try:
 					inf = self.user.MonitWater()
 				except IOError as e:
-					time.sleep(1)
-					self.cleanBrothers()
+					print "Exceção na água tentando ler novamente."
 					inf = self.user.MonitWater()
 
 				msg = "Nivel d'água na banheira: " + str( inf[0] )
-
-				bathLevel = tk.Label(self.parent, text= msg, bg="white",
-									font = font.Font(weight="normal",size=16))
-				
-				bathLevel.place(x=xi,
-								y=yi-50,
-						 		width=xf,
-								height=yf-20)
-
-				tree = ttk.Treeview(self.parent, columns=("Lugar","Estado"),
-									selectmode="extended",height=5)
-				tree["show"] = "headings"
-				tree.heading("#1", text="Lugar", anchor="center" )
-				tree.heading("#2", text="Estado", anchor="center")
-				tree.column("#1", anchor="center", width=120)
-				tree.column("#2", anchor="center", width=120)	
-
-				p = []
-				p.append("Água quenta da banheira")
-				p.append("Água fria da banheira")
-				p.append("Água quenta da piscina")
-				p.append("Água fria da banheira")		
-
+				self.bathLevel["text"] = msg
+		
 				try:
-					for i in range(0,4):
+					ch = self.tree.get_children()
+					j = 1
+					for i in ch:
 						of = "OFF"
-						if inf[i+1]:
+						if inf[j]:
 							of = "ON"
+						self.tree.set( i, 1, of )
+						j = j + 1
 
-						tree.insert("",i,text="", value=( p[i], of ) )
-
-					tree.place(
-								x = xi,
-								y = yf+20,
-								width = xf,
-								height = yf+150
-								)
-
-					self.parent.update_idletasks()
 				except Exception as e:
-					pass
+					print "Exceção na construção do monitor da água."
+
+				self.showWidgets()
+
+				time.sleep(5)
+
 			#print "Monitor da água durmindo.."
-			time.sleep(5)
 		#print "Monitor da água morto..."

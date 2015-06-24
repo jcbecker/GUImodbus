@@ -20,44 +20,41 @@ class LampMonitor(tk.Frame, threading.Thread):
 		self.stopQuery = False
 		self.exit = False
 
-	def cleanBrothers(self):
-		children = self.parent.winfo_children()
-		for c in children:
-			c.destroy()
+		self.xi=self.parent.winfo_x()
+		self.yi=self.parent.winfo_y()
+
+		self.lamp1()
+		self.lamp2()
+		self.lamp3()
+
+	def hideWidgets(self):
+		self.tree1.place_forget()
+		self.tree2.place_forget()
+		self.tree3.place_forget()
+
+	def showWidgets(self):
+		self.tree1.place(self.t1ID)
+		self.tree2.place(self.t2ID)
+		self.tree3.place(self.t3ID)
 
 	def run(self):
-		self.xi1=self.parent.winfo_x()+50
-		self.yi1=self.parent.winfo_y()-300
-		self.xf1=2*self.parent.winfo_x()+300
-		self.yf1=self.parent.winfo_y()+40
 
 		while not self.exit:
 
 			if self.stopQuery is False:
-				self.cleanBrothers()
 
 				try:
 					self.state = self.user.monitLamps()
 				except IOError as e:
-					time.sleep(1)
-					self.cleanBrothers()
-					try:
-						self.state = self.user.monitLamps()
-					except IOError as e:
-						pass
+					print "Exceção nas lampadas tentando ler novamente."
+					self.state = self.user.monitLamps()
 
-				try:
-					self.lamp1()
-					self.lamp2()
-					self.lamp3()
-					self.parent.update_idletasks()
-				except Exception as e:
-					pass
+				self.checkState(0,self.tree1)
+				self.checkState(1,self.tree2)
+				self.checkState(2,self.tree3)
 				
-		#		print "monitoramento das lampadas dormindo..."
+				self.showWidgets()
 				time.sleep(5)
-
-		#print "monitor de lampadas morto."
 
 	def lamp3(self):
 		p = []
@@ -68,23 +65,19 @@ class LampMonitor(tk.Frame, threading.Thread):
 		p.append("Piscina 2")
 		p.append("Piscina 3")
 
-		l = self.checkState(2)
-
-		tree = ttk.Treeview(self.parent, columns=("lamp","state"),
-							selectmode="extended",height=5)
-		tree["show"] = "headings"
-		tree.heading("#1", text="Lampadas 2", anchor="center" )
-		tree.heading("#2", text="Estado", anchor="center")
-		tree.column("#1", anchor="center", width=40)
-		tree.column("#2", anchor="center", width=40)
+		self.tree3 = self.newTree(3)
 
 		for i in range(6):
-			tree.insert("",i,text="", value=( p[i], l[i] ) )
+			self.tree3.insert("",i,text="", value=( p[i], " " ) )
 
-		tree.place(x=2*(self.xf1+self.xi1)+120,
-					y=self.yi1,
-					width=self.xf1+self.xi1+30,
-					height=self.yf1)
+		self.tree3.place(x=self.xi+800,
+							y=self.yi,
+							width=350,
+							height=self.yi+300)
+
+		self.t3ID = self.tree3.place_info()
+		self.tree3.place_forget()
+
 	def lamp2(self):
 		p = []
 		p.append("BWC 1")
@@ -96,23 +89,18 @@ class LampMonitor(tk.Frame, threading.Thread):
 		p.append("Suíte 2")
 		p.append("Suíte 3")
 
-		l = self.checkState(1)
-
-		tree = ttk.Treeview(self.parent, columns=("lamp","state"),
-							selectmode="extended",height=5)
-		tree["show"] = "headings"
-		tree.heading("#1", text="Lampadas 2", anchor="center" )
-		tree.heading("#2", text="Estado", anchor="center")
-		tree.column("#1", anchor="center", width=40)
-		tree.column("#2", anchor="center", width=40)
+		self.tree2 = self.newTree(2)
 
 		for i in range(8):
-			tree.insert("",i,text="", value=( p[i], l[i] ) )
+			self.tree2.insert("",i,text="", value=( p[i], " " ) )
 
-		tree.place(x=self.xf1+90,
-					y=self.yi1,
-					width=self.xf1+self.xi1+30,
-					height=self.yf1)
+		self.tree2.place(x=self.xi+400,
+							y=self.yi,
+							width=300,
+							height=self.yi+300)
+
+		self.t2ID = self.tree2.place_info()
+		self.tree2.place_forget()
 
 	def lamp1(self):
 		p = []
@@ -125,30 +113,40 @@ class LampMonitor(tk.Frame, threading.Thread):
 		p.append("Sala de jogos 2")
 		p.append("Dormitório 1")
 
-		l = self.checkState(0)
+		self.tree1 = self.newTree(1)
 
+		for i in range(8):
+			self.tree1.insert("",i,text="", value=( p[i], " " ) )
+
+		self.tree1.place(x=self.xi+50,
+							y=self.yi,
+							width=300,
+							height=self.yi+300)
+
+		self.t1ID = self.tree1.place_info()
+		self.tree1.place_forget()
+
+	def checkState(self,k,tree):
+		ch = tree.get_children()
+		
+		j = 0
+		stts = self.state[k]
+		for i in ch:	
+			of = "OFF"
+			
+			if ( stts & ( 1 << j ) ) != 0:
+				of = "ON"
+
+			tree.set(i,1, of )
+			j = j + 1
+
+	def newTree(self,id):
 		tree = ttk.Treeview(self.parent, columns=("lamp","state"),
 							selectmode="extended",height=5)
 		tree["show"] = "headings"
-
-		for i in range(8):
-			tree.insert("",i,text="", value=( p[i], l[i] ) )
-
-		tree.heading("#1", text="Lampadas 1", anchor="center" )
+		tree.heading("#1", text="Lampadas "+str(id), anchor="center" )
 		tree.heading("#2", text="Estado", anchor="center")
 		tree.column("#1", anchor="center", width=40)
 		tree.column("#2", anchor="center", width=40)
-		tree.place(x=self.xi1,
-					y=self.yi1,
-					width=self.xf1,
-					height=self.yf1)
 
-	def checkState(self,k):
-		l = []
-		stts = self.state[k]
-		for i in range(8):	
-			l.append("OFF")
-			if ( stts & ( 1 << i ) ) != 0:
-				l[i] = "ON"
-
-		return l
+		return tree

@@ -21,57 +21,65 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 		self.stopQuery = False
 		self.exit = False
 
-	def cleanBrothers(self):
-		children = self.parent.winfo_children()
-		for c in children:
-			c.destroy()
+		self.xi=self.parent.winfo_x()
+		self.yi=self.parent.winfo_y()
+
+		self.buildTree()
+
+	def hideWidgets(self):
+		self.tree.place_forget()
+
+	def showWidgets(self):
+		self.tree.place(self.tID)
 
 	def run(self):
-		self.xi=self.parent.winfo_x()+300
-		self.yi=self.parent.winfo_y()-300
-		self.xf=2*self.parent.winfo_x()+700
-		self.yf=self.parent.winfo_y()+40
 		
 		while not self.exit:
 			if not self.stopQuery:
-				self.cleanBrothers()
 
 				try:	
 					temps = self.user.readTemp()
 				except IOError as e:
-					time.sleep(1)
-					self.cleanBrothers()
-					try:
-						temps = self.user.readTemp()
-					except IOError as e:
-						pass
+					temps = self.user.readTemp()
 
-				tree = ttk.Treeview(self.parent, columns=("Lugar","Temperatura"),
-									selectmode="extended",height=5)
-				tree["show"] = "headings"
-				tree.heading("#1", text="Lugar", anchor="center" )
-				tree.heading("#2", text="Temperatura", anchor="center")
-				tree.column("#1", anchor="center", width=120)
-				tree.column("#2", anchor="center", width=120)
+				ch = self.tree.get_children()
 
-				tree.insert("",0,text="", 
-							value=( "Piscina", str( int( temps[0], 16 ) ) + "°C" ) ) 
-				tree.insert("",1,text="", 
-							value=( "Banheira", str( int( temps[1], 16 ) ) + "°C") ) 
-				tree.insert("",2,text="", 
-							value=( "Suite", str( int( temps[2], 16 ) ) + "°C") ) 
-				tree.insert("",3,text="", 
-							value=( "Sala de estar", str( int( temps[3], 16 ) ) + "°C" ) ) 
-				tree.insert("",4,text="", 
-							value=( "Sala de jogos", str( int( temps[4], 16 ) ) + "°C" ) ) 
-				tree.insert("",5,text="", 
-							value=( "Dormitorio 1", str( int( temps[5], 16 ) ) + "°C" ) ) 
-				tree.insert("",6,text="", 
-							value=( "Dormitorio 2", str( int( temps[6], 16 ) ) + "°C" ) ) 
-				tree.place(	x=self.xi, y=self.yi,
-							width= self.xf, height= self.yf )
+				j = 0
+				for i in ch:
+					self.tree.set(i,1, str( int(temps[j],16) )+"°C" )
+					j = j + 1
 
-				self.parent.update_idletasks()
+				self.showWidgets()
 		#		print "monitor de temperatura dormindo.."
 				time.sleep(5)
 		#print "monitor de temperatura morto."
+
+	def buildTree(self):
+		self.tree = ttk.Treeview(self.parent, columns=("Lugar","Temperatura"),
+									selectmode="extended",height=5)
+		self.tree["show"] = "headings"
+		self.tree.heading("#1", text="Lugar", anchor="center" )
+		self.tree.heading("#2", text="Temperatura", anchor="center")
+		self.tree.column("#1", anchor="center", width=120)
+		self.tree.column("#2", anchor="center", width=120)
+
+		p = []
+		p.append("Piscina")
+		p.append("Banheira")
+		p.append("Suite")
+		p.append("Sala de estar")
+		p.append("Sala de jogos")
+		p.append("Dormitório 1")
+		p.append("Dormitório 2")
+
+		for i in range(7):
+			self.tree.insert("",0,text="", 
+							value=( p[i], " " ) ) 
+
+		self.tree.place(x=self.xi+500,
+						y=self.yi+51,
+						width=300,
+						height=self.yi+300)
+
+		self.tID = self.tree.place_info()
+		self.tree.place_forget()

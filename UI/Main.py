@@ -57,9 +57,6 @@ class Main(tk.Tk):
 		self.alarmMonitor = AlarmMonitor(self.actions,self)
 		self.lampMonitor = LampMonitor(self.actions,self)
 
-		mw = ModBusWriter()
-		mw.write("0007", "0002")
-
 	def quit(self):
 		self.alarmMonitor.exit = True
 		self.waterMonitor.exit = True
@@ -69,7 +66,9 @@ class Main(tk.Tk):
 
 	def stopCurrentMonitor(self):
 		if self.showing is not None:
+			self.showing.hideWidgets()
 			self.showing.stopQuery = True
+			#implementar em todos os monitores.
 
 	def showTempMonitor(self):
 		if self.showing != self.tempMonitor:
