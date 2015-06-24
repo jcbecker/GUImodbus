@@ -5,6 +5,7 @@ import tkFont as font
 import Tkinter as tk
 import ttk
 import threading
+import time
 
 from TemperatureMonitor import TemperatureMonitor 
 from WaterMonitor import WaterMonitor
@@ -117,28 +118,28 @@ class Main(tk.Tk):
 
 		self.wmBtn = tk.Button( self, text = "Água", fg="blue", bg="white", 
 								activebackground="white",font=self.btnFont,
-								command=lambda:self.showWaterMonitor())
+								command=self.showWaterMonitor)
 		self.wmBtn.place(x=self.distBetweenBtnSecLine,
 						 y=self.labelHeight + self.distBetweenLines,
 						 width=self.screenWidth*0.20,
 						 height=self.screenHeight*0.05)
 
 		self.amBtn = tk.Button( self, text = "Alarme", fg="red", bg="white", activebackground="white",font=self.btnFont,
-								command=lambda:self.showAlarmMonitor())
+								command=self.showAlarmMonitor)
 		self.amBtn.place(x = self.screenWidth*0.20 + self.distBetweenBtnSecLine*2,
 						 y = self.labelHeight + + self.distBetweenLines,
 						 width= self.screenWidth*0.20,
 						 height= self.screenHeight*0.05)
 
 		self.imBtn = tk.Button( self, text = "Iluminação", fg="green", bg="white", activebackground="white",font=self.btnFont,
-								command=lambda:self.showLampMonitor())
+								command=self.showLampMonitor)
 		self.imBtn.place(x = self.screenWidth*0.40 + self.distBetweenBtnSecLine*3,
 						 y = self.labelHeight + + self.distBetweenLines,
 						 width = self.screenWidth*0.20,
 						 height = self.screenHeight*0.05)
 
 		self.tmBtn = tk.Button( self, text = "Temperatura", fg="orange", bg="white", activebackground="white",font=self.btnFont,
-								command=lambda:self.showTempMonitor() )
+								command=self.showTempMonitor )
 
 		self.tmBtn.place(x = self.screenWidth*0.60 + self.distBetweenBtnSecLine*4,
 						 y = self.labelHeight + self.distBetweenLines,

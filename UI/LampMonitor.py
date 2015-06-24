@@ -38,9 +38,9 @@ class LampMonitor(tk.Frame, threading.Thread):
 		self.tree3.place(self.t3ID)
 
 	def run(self):
-
+		
 		while not self.exit:
-
+			flagFirst = True
 			if self.stopQuery is False:
 
 				try:
@@ -52,8 +52,11 @@ class LampMonitor(tk.Frame, threading.Thread):
 				self.checkState(0,self.tree1)
 				self.checkState(1,self.tree2)
 				self.checkState(2,self.tree3)
+
+				if flagFirst:
+					flagFirst = False
+					self.showWidgets()
 				
-				self.showWidgets()
 				time.sleep(5)
 
 	def lamp3(self):

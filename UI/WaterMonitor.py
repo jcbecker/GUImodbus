@@ -78,6 +78,7 @@ class WaterMonitor(tk.Frame,threading.Thread):
 	def run(self):
 		
 		while not self.exit:
+			flagFirst = True
 			if not self.stopQuery:
 				try:
 					inf = self.user.MonitWater()
@@ -101,7 +102,9 @@ class WaterMonitor(tk.Frame,threading.Thread):
 				except Exception as e:
 					print "Exceção na construção do monitor da água."
 
-				self.showWidgets()
+				if flagFirst:
+					flagFirst = False
+					self.showWidgets()
 
 				time.sleep(5)
 

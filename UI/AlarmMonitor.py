@@ -95,9 +95,9 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		self.tree.place(self.tID)
 
 	def run(self):
-
+		
 		while not self.exit:
-
+			flagFirst = True
 			if not self.stopQuery:
 
 				try:
@@ -137,8 +137,9 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 
 					j = j + 1
 
-
-				self.showWidgets()
+				if flagFirst:
+					flagFirst = False
+					self.showWidgets()
 
 				#print "Monitor do alarme dormindo..."
 				time.sleep(5)
