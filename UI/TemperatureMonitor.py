@@ -33,7 +33,7 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 		self.tree.place(self.tID)
 
 	def run(self):
-		
+
 		while not self.exit:
 			flagFirst = True
 			if not self.stopQuery:
@@ -54,8 +54,11 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 					flagFirst = False
 					self.showWidgets()
 
-		#		print "monitor de temperatura dormindo.."
+				#print "monitor de temperatura dormindo.."
 				time.sleep(5)
+				
+			if not flagFirst:
+				self.hideWidgets()
 		#print "monitor de temperatura morto."
 
 	def buildTree(self):

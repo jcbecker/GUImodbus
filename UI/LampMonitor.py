@@ -38,7 +38,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 		self.tree3.place(self.t3ID)
 
 	def run(self):
-		
+
 		while not self.exit:
 			flagFirst = True
 			if self.stopQuery is False:
@@ -56,8 +56,11 @@ class LampMonitor(tk.Frame, threading.Thread):
 				if flagFirst:
 					flagFirst = False
 					self.showWidgets()
-				
+					
 				time.sleep(5)
+				
+			if not flagFirst:
+				self.hideWidgets()			
 
 	def lamp3(self):
 		p = []
@@ -73,7 +76,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 		for i in range(6):
 			self.tree3.insert("",i,text="", value=( p[i], " " ) )
 
-		self.tree3.place(x=self.xi+800,
+		self.tree3.place(x=self.xi+850,
 							y=self.yi,
 							width=350,
 							height=self.yi+300)
@@ -97,7 +100,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 		for i in range(8):
 			self.tree2.insert("",i,text="", value=( p[i], " " ) )
 
-		self.tree2.place(x=self.xi+400,
+		self.tree2.place(x=self.xi+440,
 							y=self.yi,
 							width=300,
 							height=self.yi+300)

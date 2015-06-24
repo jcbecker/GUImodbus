@@ -107,6 +107,8 @@ class WaterMonitor(tk.Frame,threading.Thread):
 					self.showWidgets()
 
 				time.sleep(5)
-
+				
+			if not flagFirst:
+				self.hideWidgets()
 			#print "Monitor da água durmindo.."
 		#print "Monitor da água morto..."

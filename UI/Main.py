@@ -67,8 +67,8 @@ class Main(tk.Tk):
 
 	def stopCurrentMonitor(self):
 		if self.showing is not None:
-			self.showing.hideWidgets()
 			self.showing.stopQuery = True
+			self.showing.hideWidgets()
 			#implementar em todos os monitores.
 
 	def showTempMonitor(self):
