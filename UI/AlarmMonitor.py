@@ -56,8 +56,8 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		self.tree.place(
 						x = self.xi+400,
 						y = self.yi+100,
-						width = self.xi+600,
-						height = self.yi+350
+						width = 500,
+						height = 350
 						)
 
 		p = []
@@ -97,10 +97,11 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 				break;
 			except Exception as e:
 				hardware = hardware + 1
-				print "Exceção enquanto ligava/desligava alarme."
+				#print "Exceção enquanto ligava/desligava alarme."
 
 		if hardware == 1000:
 			print "hardware problem!"
+
 	def buildButtons(self):
 		self.onOff = tk.Button( self.parent, text = "Ligar", fg="white", 
 								font = font.Font(weight="normal",size=14),
@@ -108,10 +109,10 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 								activebackground="white",
 								command= self.ONOFFListener )
 
-		self.onOff.place(x=self.xi+805,
+		self.onOff.place(x=self.xi+705,
 							y=self.yi+41,
 							width=195,
-							height=self.yi+51
+							height=51
 						)
 
 		self.onOffID = self.onOff.place_info()
@@ -122,9 +123,9 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 							font = font.Font(weight="normal",size=16))
 
 		self.ag.place(x=self.xi+400,
-						y=self.yi+41,
-						width=self.xi+400,
-						height=self.yi+51)
+						y=self.yi+50,
+						width=320,
+						height=20)
 
 		self.agID = self.ag.place_info()
 		self.ag.place_forget()
@@ -133,9 +134,9 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 							font = font.Font(weight="normal",size=16))
 
 		self.ad.place(x=self.xi+400,
-						y=self.yi,
-				 		width=self.xi+400,
-						height=self.yi+40)
+						y=self.yi+10,
+				 		width=320,
+						height=20)
 		self.adID = self.ad.place_info()
 		self.ad.place_forget()
 
@@ -190,7 +191,8 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 					#print "Monitor do alarme dormindo..."
 					time.sleep(5)
 				except Exception as e:
-					print "Exceção nos alarmes aguarde outra leitura."
+					pass
+		#			print "Exceção nos alarmes aguarde outra leitura."
 					
 
 			if (not flagFirst) and self.stopQuery:
