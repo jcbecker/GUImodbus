@@ -11,7 +11,6 @@ class Water:
 		self.writer = ModBusWriter()
 
 		answer = self.reader.read("0008","0001")
-		print answer
 		self.regState = int(answer[7:11],16)
 
 	def MonitWater(self):
