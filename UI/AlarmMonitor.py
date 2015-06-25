@@ -84,20 +84,23 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 	#de monitoramento.
 	def ONOFFListener(self):
 		
-		try:
-			newStt = self.user.ONOFF()
-		except IOError as e:
-			#depois capturar esta exceção também
-			#e mostrar mensagem para o usuário
-			newStt = self.user.ONOFF()
+		hardware = 0
+		while hardware < 1000:
+			try:
+				if self.user.ONOFF():
+					self.onOff["bg"] = "#CC3300"
+					self.onOff["text"] = "Desligar"
+				else:
+					self.onOff["bg"] = "#339966"
+					self.onOff["text"] = "Ligar"
 
-		if newStt:
-			self.onOff["bg"] = "#CC3300"
-			self.onOff["text"] = "Desligar"
-		else:
-			self.onOff["bg"] = "#339966"
-			self.onOff["text"] = "Ligar"
+				break;
+			except Exception as e:
+				hardware = hardware + 1
+				print "Exceção enquanto ligava/desligava alarme."
 
+		if hardware == 1000:
+			print "hardware problem!"
 	def buildButtons(self):
 		self.onOff = tk.Button( self.parent, text = "Ligar", fg="white", 
 								font = font.Font(weight="normal",size=14),
@@ -186,7 +189,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 
 					#print "Monitor do alarme dormindo..."
 					time.sleep(5)
-				except IOError as e:
+				except Exception as e:
 					print "Exceção nos alarmes aguarde outra leitura."
 					
 
