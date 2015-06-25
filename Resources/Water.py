@@ -59,7 +59,6 @@ class Water:
 		if not self.writer.write (comReg,regData):
 			raise IOError("HotWaterBathtub WriteException") 
 		
-		
 		#tem que retornar se ta ligada ou
 		#desligada. E não se conseguiu escrever,
 		#se conseguiu escrever ou não quem retorna

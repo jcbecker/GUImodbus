@@ -4,6 +4,8 @@
 from ..IO.ModBusWriter import ModBusWriter
 from ..IO.ModBusReader import ModBusReader
 
+import time
+
 class Alarm:
 
 	def __init__(self):		
