@@ -32,10 +32,16 @@ class WaterMonitor(tk.Frame,threading.Thread):
 		self.buildTree()
 
 	def exhaustBath(self):
-		try:
-			self.user.tap(3)
-		except IOError as e:
-			self.user.tap(3)
+
+		hardware = 0
+		while hardware < 1000:
+			try:
+				self.user.tap(3)
+			except IOError as e:
+				hardware = hardware + 1
+
+		if hardware == 1000:
+			print "erro de hardware."
 
 	def buildExhaustBath(self):
 		self.exhaust = tk.Button( self.parent, text = "Esvaziar", fg="white", 
@@ -87,9 +93,9 @@ class WaterMonitor(tk.Frame,threading.Thread):
 						width=500,
 						height=200)
 
-		self.tree.bind("<Button-1>", self.waterListener)
 		self.chTree = self.tree.get_children()
 		self.tID = self.tree.place_info()
+		self.tree.bind("<Button-1>", self.waterListener)
 		self.tree.place_forget()
 
 	def waterListener(self, e ):
@@ -101,6 +107,8 @@ class WaterMonitor(tk.Frame,threading.Thread):
 		if k >= 3:
 			k = k + 1
 
+		b = self.stopQuery
+		self.stopQuery = False
 		hardware = 0
 		while hardware < 1000:
 			try:
@@ -117,6 +125,7 @@ class WaterMonitor(tk.Frame,threading.Thread):
 
 		if hardware == 1000:
 			print "Hardware problem!"	
+		self.stopQuery = b
 
 	def showWidgets(self):
 		self.bathLevel.place( self.bathID )
