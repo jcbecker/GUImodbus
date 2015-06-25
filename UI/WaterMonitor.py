@@ -45,9 +45,9 @@ class WaterMonitor(tk.Frame,threading.Thread):
 									command= self.exhaustBath )
 
 		self.exhaust.place(x=self.xi+725,
-							y=self.yi,
+							y=self.yi+35,
 							width=175,
-							height=self.yi+50)
+							height=50)
 
 		self.exhaustID = self.exhaust.place_info()
 		self.exhaust.place_forget()
@@ -57,9 +57,9 @@ class WaterMonitor(tk.Frame,threading.Thread):
 									font = font.Font(weight="normal",size=16))
 				
 		self.bathLevel.place(x=self.xi+400,
-								y=self.yi,
+								y=self.yi+49,
 				 				width=320,
-								height=self.yi+50)
+								height=20)
 
 		self.bathID = self.bathLevel.place_info()
 		self.bathLevel.place_forget()
@@ -83,9 +83,9 @@ class WaterMonitor(tk.Frame,threading.Thread):
 			self.tree.insert("",i,text="", value=( p[i], " "))
 
 		self.tree.place(x=self.xi+400,
-						y=self.yi+51,
-						width=self.xi+500,
-						height=self.yi+200)
+						y=self.yi+100,
+						width=500,
+						height=200)
 
 		self.tree.bind("<Button-1>", self.waterListener)
 		self.chTree = self.tree.get_children()
@@ -113,7 +113,7 @@ class WaterMonitor(tk.Frame,threading.Thread):
 				break;
 			except Exception as e:
 				hardware = hardware + 1
-				print "Exceção na mudança do estado da torneira tente novamente"
+				#print "Exceção na mudança do estado da torneira tente novamente"
 
 		if hardware == 1000:
 			print "Hardware problem!"	
@@ -155,10 +155,10 @@ class WaterMonitor(tk.Frame,threading.Thread):
 						break
 					time.sleep(5)
 
-					print "Monitor da água durmindo.."
+					#print "Monitor da água durmindo.."
 				except Exception as e:
-
-					print "Exceção na água aguarde outra leitura."
+					pass
+					#print "Exceção na água aguarde outra leitura."
 
 
 			if (not flagFirst) and self.stopQuery:
