@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 from ..Resources.Lamp import Lamp
+
 import Tkinter as tk
 import tkFont as font
 import threading
@@ -37,6 +38,10 @@ class LampMonitor(tk.Frame, threading.Thread):
 		self.tree2.place(self.t2ID)
 		self.tree3.place(self.t3ID)
 
+	def lampListener(self,e):
+		i = self.tree2.identify('item',e.x,e.y)
+		print i
+
 	def run(self):
 
 		while not self.exit:
@@ -45,22 +50,26 @@ class LampMonitor(tk.Frame, threading.Thread):
 
 				try:
 					self.state = self.user.monitLamps()
+
+					self.checkState(0,self.tree1,self.chTree1)
+					self.checkState(1,self.tree2,self.chTree2)
+					self.checkState(2,self.tree3,self.chTree3)
+
+					if flagFirst:
+						flagFirst = False
+						self.showWidgets()
+
+					if self.exit:
+						break
+				
+					#print "Monito das lampadas durmindo."
+					time.sleep(5)
 				except IOError as e:
-					print "Exceção nas lampadas tentando ler novamente."
-					self.state = self.user.monitLamps()
-
-				self.checkState(0,self.tree1,self.chTree1)
-				self.checkState(1,self.tree2,self.chTree2)
-				self.checkState(2,self.tree3,self.chTree3)
-
-				if flagFirst:
-					flagFirst = False
-					self.showWidgets()
-					
-				time.sleep(5)
+					print "Exceção nas lampadas aguarde outra leitura."
 
 			if (not flagFirst) and self.stopQuery:
 				self.hideWidgets()			
+		#print "Monitor das lampadas morto."
 
 	def lamp3(self):
 		p = []
@@ -83,6 +92,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 
 		self.chTree3 = self.tree3.get_children()
 		self.t3ID = self.tree3.place_info()
+		self.tree3.bind("<Button-1>", self.lampListener)
 		self.tree3.place_forget()
 
 	def lamp2(self):
@@ -108,6 +118,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 
 		self.chTree2 = self.tree2.get_children()
 		self.t2ID = self.tree2.place_info()
+		self.tree2.bind("<Button-1>", self.lampListener)
 		self.tree2.place_forget()
 
 	def lamp1(self):
@@ -133,6 +144,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 
 		self.chTree1 = self.tree1.get_children()
 		self.t1ID = self.tree1.place_info()
+		self.tree1.bind("<Button-1>", self.lampListener)
 		self.tree1.place_forget()
 
 	def checkState(self,k,tree,ch):
