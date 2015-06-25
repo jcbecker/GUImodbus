@@ -64,6 +64,7 @@ class WaterMonitor(tk.Frame,threading.Thread):
 						width=self.xi+500,
 						height=self.yi+200)
 
+		self.chTree = self.tree.get_children()
 		self.tID = self.tree.place_info()
 		self.tree.place_forget()
 
@@ -90,9 +91,9 @@ class WaterMonitor(tk.Frame,threading.Thread):
 				self.bathLevel["text"] = msg
 		
 				try:
-					ch = self.tree.get_children()
+					
 					j = 1
-					for i in ch:
+					for i in self.chTree:
 						of = "OFF"
 						if inf[j]:
 							of = "ON"
@@ -107,8 +108,8 @@ class WaterMonitor(tk.Frame,threading.Thread):
 					self.showWidgets()
 
 				time.sleep(5)
-				
-			if not flagFirst:
+
+			if (not flagFirst) and self.stopQuery:
 				self.hideWidgets()
 			#print "Monitor da água durmindo.."
 		#print "Monitor da água morto..."

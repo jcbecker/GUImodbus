@@ -43,10 +43,8 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 				except IOError as e:
 					temps = self.user.readTemp()
 
-				ch = self.tree.get_children()
-
 				j = 0
-				for i in ch:
+				for i in self.chTree:
 					self.tree.set(i,1, str( int(temps[j],16) )+"°C" )
 					j = j + 1
 
@@ -56,8 +54,8 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 
 				#print "monitor de temperatura dormindo.."
 				time.sleep(5)
-				
-			if not flagFirst:
+
+			if (not flagFirst) and self.stopQuery:
 				self.hideWidgets()
 		#print "monitor de temperatura morto."
 
@@ -88,5 +86,6 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 						width=300,
 						height=self.yi+300)
 
+		self.chTree = self.tree.get_children()
 		self.tID = self.tree.place_info()
 		self.tree.place_forget()

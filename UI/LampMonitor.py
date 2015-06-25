@@ -49,17 +49,17 @@ class LampMonitor(tk.Frame, threading.Thread):
 					print "Exceção nas lampadas tentando ler novamente."
 					self.state = self.user.monitLamps()
 
-				self.checkState(0,self.tree1)
-				self.checkState(1,self.tree2)
-				self.checkState(2,self.tree3)
+				self.checkState(0,self.tree1,self.chTree1)
+				self.checkState(1,self.tree2,self.chTree2)
+				self.checkState(2,self.tree3,self.chTree3)
 
 				if flagFirst:
 					flagFirst = False
 					self.showWidgets()
 					
 				time.sleep(5)
-				
-			if not flagFirst:
+
+			if (not flagFirst) and self.stopQuery:
 				self.hideWidgets()			
 
 	def lamp3(self):
@@ -81,6 +81,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 							width=350,
 							height=self.yi+300)
 
+		self.chTree3 = self.tree3.get_children()
 		self.t3ID = self.tree3.place_info()
 		self.tree3.place_forget()
 
@@ -105,6 +106,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 							width=300,
 							height=self.yi+300)
 
+		self.chTree2 = self.tree2.get_children()
 		self.t2ID = self.tree2.place_info()
 		self.tree2.place_forget()
 
@@ -129,11 +131,11 @@ class LampMonitor(tk.Frame, threading.Thread):
 							width=300,
 							height=self.yi+300)
 
+		self.chTree1 = self.tree1.get_children()
 		self.t1ID = self.tree1.place_info()
 		self.tree1.place_forget()
 
-	def checkState(self,k,tree):
-		ch = tree.get_children()
+	def checkState(self,k,tree,ch):
 		
 		j = 0
 		stts = self.state[k]

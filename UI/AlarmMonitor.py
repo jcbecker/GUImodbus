@@ -58,6 +58,8 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		for i in range(8):
 			self.tree.insert("",i,text="", value=( p[i], " " ) )
 
+		#importante para não criar muitas listas.
+		self.chTree = self.tree.get_children()
 		self.tID = self.tree.place_info()
 
 		self.tree.place_forget()
@@ -80,6 +82,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 						y=self.yi+51,
 						width=self.xi+500,
 						height=self.yi+101)
+
 
 		self.adID = self.ad.place_info()
 		self.ad.place_forget()
@@ -125,10 +128,8 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 
 				states = inf[2]
 
-				ch = self.tree.get_children()
-
 				j = 0
-				for i in ch:
+				for i in self.chTree:
 					of = "OFF"
 					if (states&(1 << j )) != 0:
 						of = "ON"
@@ -143,6 +144,6 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 
 				#print "Monitor do alarme dormindo..."
 				time.sleep(5)
-			if not flagFirst:
+			if (not flagFirst) and self.stopQuery:
 				self.hideWidgets()
 			#print "Monitor do alarme morto."
