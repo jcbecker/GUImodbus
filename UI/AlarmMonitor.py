@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 from ..Resources.Alarm import Alarm
+
 import Tkinter as tk
 import Tkinter as tkk
 import tkFont as font
@@ -14,6 +15,7 @@ from ..IO.ModBusWriter import ModBusWriter
 class AlarmMonitor(tk.Frame,threading.Thread):
 
 	def __init__(self, parent, controller ):
+		self.writer = ModBusWriter()
 		tk.Frame.__init__(self,parent,background = "white")
 		threading.Thread.__init__(self)
 
@@ -28,19 +30,32 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 
 		self.buildTree()
 		self.buildAlarmLabels()
+		self.buildButtons()
+
+	def hideWidgets(self):
+		self.tree.place_forget()
+		self.ag.place_forget()
+		self.ad.place_forget()
+		self.onOff.place_forget()
+
+	def showWidgets(self):
+		self.ag.place(self.agID)
+		self.ad.place(self.adID)
+		self.onOff.place(self.onOffID)
+		self.tree.place(self.tID)
 
 	def buildTree(self):
 		self.tree = ttk.Treeview(self.parent, columns=("Lugar","Estado"),
-								selectmode="extended",height=5)
+									selectmode="extended",height=5)
 		self.tree["show"] = "headings"
 		self.tree.heading("#1", text="Lugar", anchor="center" )
 		self.tree.heading("#2", text="Estado", anchor="center")
-		self.tree.column("#1", anchor="center", width=120)
-		self.tree.column("#2", anchor="center", width=120)
+		self.tree.column("#1", anchor="center", width=100)
+		self.tree.column("#2", anchor="center", width=100)
 
 		self.tree.place(
 						x = self.xi+400,
-						y = self.yi+160,
+						y = self.yi+100,
 						width = self.xi+600,
 						height = self.yi+350
 						)
@@ -64,38 +79,62 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 
 		self.tree.place_forget()
 
+	#funciona mas para testar realmente
+	#tem que mudar o valor dos registradores
+	#de monitoramento.
+	def ONOFFListener(self):
+		
+		try:
+			newStt = self.user.ONOFF()
+		except IOError as e:
+			#depois capturar esta exceção também
+			#e mostrar mensagem para o usuário
+			newStt = self.user.ONOFF()
+
+		if newStt:
+			self.onOff["bg"] = "#CC3300"
+			self.onOff["text"] = "Desligar"
+		else:
+			self.onOff["bg"] = "#339966"
+			self.onOff["text"] = "Ligar"
+
+	def buildButtons(self):
+		self.onOff = tk.Button( self.parent, text = "Ligar", fg="white", 
+								font = font.Font(weight="normal",size=14),
+								bg="#339966", 
+								activebackground="white",
+								command= self.ONOFFListener )
+
+		self.onOff.place(x=self.xi+805,
+							y=self.yi+41,
+							width=195,
+							height=self.yi+51
+						)
+
+		self.onOffID = self.onOff.place_info()
+		self.onOff.place_forget()
+
 	def buildAlarmLabels(self):
 		self.ag = tk.Label(self.parent, text= " ", bg="white",
-									font = font.Font(weight="normal",size=16))
-		self.ag.place(x=self.xi+450,
-					y=self.yi,
-				 	width=self.xi+500,
-					height=self.yi+50)
+							font = font.Font(weight="normal",size=16))
+
+		self.ag.place(x=self.xi+400,
+						y=self.yi+41,
+						width=self.xi+400,
+						height=self.yi+51)
 
 		self.agID = self.ag.place_info()
 		self.ag.place_forget()
 
 		self.ad = tk.Label(self.parent, text = " ", bg = "white",
-						font = font.Font(weight="normal",size=16))
+							font = font.Font(weight="normal",size=16))
 
-		self.ad.place(x=self.xi+450,
-						y=self.yi+51,
-						width=self.xi+500,
-						height=self.yi+101)
-
-
+		self.ad.place(x=self.xi+400,
+						y=self.yi,
+				 		width=self.xi+400,
+						height=self.yi+40)
 		self.adID = self.ad.place_info()
 		self.ad.place_forget()
-
-	def hideWidgets(self):
-		self.tree.place_forget()
-		self.ag.place_forget()
-		self.ad.place_forget()
-
-	def showWidgets(self):
-		self.ag.place(self.agID)
-		self.ad.place(self.adID)
-		self.tree.place(self.tID)
 
 	def run(self):
 
@@ -104,46 +143,53 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 			if not self.stopQuery:
 
 				try:
-					inf = self.user.alarmInf()
+					self.inf = self.user.alarmInf()
+					msg = "O alarme geral está "
+					if self.inf[0]:
+						self.onOff["bg"] = "#CC3300"
+						self.onOff["text"] = "Desligar"
+						msg = msg + "ligado."
+					else:
+						self.onOff["bg"] = "#339966"
+						self.onOff["text"] = "Ligar"
+						msg = msg + "desligado."
+
+					self.ag["text"] = msg
+
+					color = "red"
+					msg = "O alarme"
+					if not self.inf[1]:
+						color = "white"
+						msg = msg + " não"
+					
+					msg = msg + " está disparado."
+					self.ad["text"] = msg
+
+					states = self.inf[2]
+
+					j = 0
+					for i in self.chTree:
+						of = "OFF"
+						if (states&(1 << j )) != 0:
+							of = "ON"
+
+						self.tree.set(i,1, of )
+
+						j = j + 1
+
+					if flagFirst:
+						flagFirst = False
+						self.showWidgets()
+
+					if self.exit:
+						break
+
+					#print "Monitor do alarme dormindo..."
+					time.sleep(5)
 				except IOError as e:
-					print "Exceção nos alarmes tentando ler novamente."
-					inf = self.user.alarmInf()
+					print "Exceção nos alarmes aguarde outra leitura."
+					
 
-				msg = "O alarme geral está "
-				if inf[0]:
-					msg = msg + "ligado."
-				else:
-					msg = msg + "desligado."
-
-				self.ag["text"] = msg
-
-				color = "red"
-				msg = "O alarme"
-				if not inf[1]:
-					color = "white"
-					msg = msg + " não"
-				
-				msg = msg + " está disparado."
-				self.ad["text"] = msg
-
-				states = inf[2]
-
-				j = 0
-				for i in self.chTree:
-					of = "OFF"
-					if (states&(1 << j )) != 0:
-						of = "ON"
-
-					self.tree.set(i,1, of )
-
-					j = j + 1
-
-				if flagFirst:
-					flagFirst = False
-					self.showWidgets()
-
-				#print "Monitor do alarme dormindo..."
-				time.sleep(5)
 			if (not flagFirst) and self.stopQuery:
 				self.hideWidgets()
-			#print "Monitor do alarme morto."
+		#print "Monitor do alarme morto."
