@@ -110,14 +110,15 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 					self.onOff["bg"] = "#339966"
 					self.onOff["text"] = "Ligar"
 
-				self.obs["bg"] = "white"
+					self.obs["bg"] = "white"
 				break;
 			except Exception as e:
 				print "puta que pariu"
 				hardware = hardware + 1
 
 		if hardware == 1000:
-			print "hardware problem!"
+			self.obs["bg"] = "white"
+			self.obs["text"] = "Error no hardware do alarme."
 
 	def buildButtons(self):
 		self.onOff = tk.Button( self.parent, text = "Ligar", fg="white", 

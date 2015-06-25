@@ -12,8 +12,9 @@ class Alarm:
 		self.writer = ModBusWriter()
 		self.reader = ModBusReader()
 
-		self.answer = None
-		
+		answer = self.reader.read("0008","0001")
+		self.regState = int( answer[7:11], 16 )
+
 	#usa o bit 0 do registrador 8 para
 	#ligar ou desligar o alarme da casa
 	#retorna false se o alarme foi desligado
@@ -22,13 +23,7 @@ class Alarm:
 		comReg = "0008"
 		regNumber = "0001"
 
-		answer = self.reader.read( comReg, regNumber )
-
-		if answer[5]+answer[6] != "02":
-			raise IOError("AlarmAnswerException")	
-
-		regData = int( answer[7:11], 16 )
-
+		regData = self.regState
 		if regData & 1:
 			regData = regData - 1
 			self.state = False
@@ -36,6 +31,7 @@ class Alarm:
 			self.state = True
 			regData = regData + 1
 
+		copy = regData
 		regData = hex(regData)[2:]
 
 		l = len(regData)
@@ -47,7 +43,8 @@ class Alarm:
 		elif l == 3:
 			regData = "0"+regData
 
-		if self.writer.write( comReg, regData ):
+		if self.writer.write( comReg, regData.upper() ):
+			self.regState = copy
 			return self.state
 		
 		raise IOError("AlarmAnswerException")
