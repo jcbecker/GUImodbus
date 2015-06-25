@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 from ..Resources.Temperature import Temperature
+
 import Tkinter as tk
 import Tkinter as tkk
 import tkFont as font
@@ -40,20 +41,22 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 
 				try:	
 					temps = self.user.readTemp()
+					j = 0
+					for i in self.chTree:
+						self.tree.set(i,1, str( int(temps[j],16) )+"°C" )
+						j = j + 1
+
+					if flagFirst:
+						flagFirst = False
+						self.showWidgets()
+
+					if self.exit:
+						break
+					#print "monitor de temperatura dormindo.."
+					time.sleep(5)
 				except IOError as e:
-					temps = self.user.readTemp()
+					print "Erro na leitura da temperatura espere outra leitura."
 
-				j = 0
-				for i in self.chTree:
-					self.tree.set(i,1, str( int(temps[j],16) )+"°C" )
-					j = j + 1
-
-				if flagFirst:
-					flagFirst = False
-					self.showWidgets()
-
-				#print "monitor de temperatura dormindo.."
-				time.sleep(5)
 
 			if (not flagFirst) and self.stopQuery:
 				self.hideWidgets()
