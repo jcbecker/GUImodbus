@@ -59,7 +59,8 @@ class WaterMonitor(tk.Frame,threading.Thread):
 				hardware = hardware + 1
 
 		if hardware == 1000:
-			print "erro de hardware."
+			self.obs["bg"] = "white"
+			self.obs["text"] = "Erro no hardare da banheira."
 
 	def buildExhaustBath(self):
 		self.exhaust = tk.Button( self.parent, text = "Esvaziar", fg="white", 
@@ -128,9 +129,7 @@ class WaterMonitor(tk.Frame,threading.Thread):
 		k = chi
 		if k >= 3:
 			k = k + 1
-
-		b = self.stopQuery
-		self.stopQuery = False
+			
 		hardware = 0
 		while hardware < 1000:
 			try:
@@ -142,12 +141,13 @@ class WaterMonitor(tk.Frame,threading.Thread):
 				self.obs["bg"] = "white"
 				break;
 			except Exception as e:
+				print str(hardware)
 				hardware = hardware + 1
-				#print "Exceção na mudança do estado da torneira tente novamente"
+			#print "Exceção na mudança do estado da torneira tente novamente"
 
 		if hardware == 1000:
-			print "Hardware problem!"	
-		self.stopQuery = b
+			self.obs["bg"] = "white"
+			self.obs["text"] = "Erro no hardware da torneira."
 
 	def showWidgets(self):
 		self.bathLevel.place( self.bathID )

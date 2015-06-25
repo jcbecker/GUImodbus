@@ -11,6 +11,7 @@ class Water:
 		self.writer = ModBusWriter()
 
 		answer = self.reader.read("0008","0001")
+		print answer
 		self.regState = int(answer[7:11],16)
 
 	def MonitWater(self):
@@ -35,7 +36,6 @@ class Water:
 		
 	def tap(self, pw ):
 		comReg = "0008"
-		regNumber = "0001"
 		
 		pw = ( 1 << pw )
 
@@ -47,7 +47,7 @@ class Water:
 			regData = ~ pw
 			regData = regData & self.regState 
 		
-		self.regState = regData
+		copy = regData
 		regData = hex(regData)[2:]
 		
 		l = len(regData)
@@ -55,10 +55,11 @@ class Water:
 		while l < 4 :
 			l = l + 1
 			regData="0"+regData
+
+		if not self.writer.write (comReg,regData.upper()):
+			raise IOError("WriteException") 
 		
-		if not self.writer.write (comReg,regData):
-			raise IOError("HotWaterBathtub WriteException") 
-		
+		self.regState = copy
 		#tem que retornar se ta ligada ou
 		#desligada. E não se conseguiu escrever,
 		#se conseguiu escrever ou não quem retorna
