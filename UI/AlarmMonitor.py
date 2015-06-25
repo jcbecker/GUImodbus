@@ -24,6 +24,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		self.ctrl = controller
 		self.stopQuery = False
 		self.exit = False
+		self.notWrite = False
 
 		self.xi=self.parent.winfo_x()
 		self.yi=self.parent.winfo_y()
@@ -31,6 +32,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		self.buildTree()
 		self.buildAlarmLabels()
 		self.buildButtons()
+		self.obsLabel()
 
 	def hideWidgets(self):
 		self.tree.place_forget()
@@ -43,6 +45,16 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		self.ad.place(self.adID)
 		self.onOff.place(self.onOffID)
 		self.tree.place(self.tID)
+
+	def obsLabel(self):
+
+		self.obs = tk.Label(self.parent, text= " ", bg="white",
+									font = font.Font(weight="normal",size=16))
+				
+		self.obs.place(x=self.xi+400,
+								y=self.yi+460,
+				 				width=500,
+								height=50)
 
 	def buildTree(self):
 		self.tree = ttk.Treeview(self.parent, columns=("Lugar","Estado"),
@@ -83,6 +95,10 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 	#tem que mudar o valor dos registradores
 	#de monitoramento.
 	def ONOFFListener(self):
+
+		if self.notWrite:
+			self.obs["bg"] = "#CC3300"
+			return None
 		
 		hardware = 0
 		while hardware < 1000:
@@ -94,10 +110,11 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 					self.onOff["bg"] = "#339966"
 					self.onOff["text"] = "Ligar"
 
+				self.obs["bg"] = "white"
 				break;
 			except Exception as e:
+				print "puta que pariu"
 				hardware = hardware + 1
-				#print "Exceção enquanto ligava/desligava alarme."
 
 		if hardware == 1000:
 			print "hardware problem!"
@@ -109,9 +126,9 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 								activebackground="white",
 								command= self.ONOFFListener )
 
-		self.onOff.place(x=self.xi+705,
+		self.onOff.place(x=self.xi+735,
 							y=self.yi+41,
-							width=195,
+							width=165,
 							height=51
 						)
 
@@ -124,7 +141,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 
 		self.ag.place(x=self.xi+400,
 						y=self.yi+50,
-						width=320,
+						width=330,
 						height=20)
 
 		self.agID = self.ag.place_info()
@@ -145,8 +162,8 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		while not self.exit:
 			flagFirst = True
 			if not self.stopQuery:
-
 				try:
+					self.notWrite = True
 					self.inf = self.user.alarmInf()
 					msg = "O alarme geral está "
 					if self.inf[0]:
@@ -188,6 +205,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 					if self.exit:
 						break
 
+					self.notWrite = False
 					#print "Monitor do alarme dormindo..."
 					time.sleep(5)
 				except Exception as e:

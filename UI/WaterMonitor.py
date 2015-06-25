@@ -27,16 +27,34 @@ class WaterMonitor(tk.Frame,threading.Thread):
 		self.xi=self.parent.winfo_x()
 		self.yi=self.parent.winfo_y()
 
+		self.notWrite = False
 		self.buildLevelLabel()
 		self.buildExhaustBath()
 		self.buildTree()
+		self.obsLabel()
+
+	def obsLabel(self):
+
+		self.obs = tk.Label(self.parent, text= " ", bg="white",
+									font = font.Font(weight="normal",size=16))
+				
+		self.obs.place(x=self.xi+400,
+								y=self.yi+310,
+				 				width=500,
+								height=50)
 
 	def exhaustBath(self):
+
+		if self.notWrite:
+			self.obs["bg"] = "#CC3300"
+			return None
 
 		hardware = 0
 		while hardware < 1000:
 			try:
 				self.user.tap(3)
+				self.obs["bg"] = "white"
+				break;
 			except IOError as e:
 				hardware = hardware + 1
 
@@ -100,6 +118,10 @@ class WaterMonitor(tk.Frame,threading.Thread):
 
 	def waterListener(self, e ):
 
+		if self.notWrite:
+			self.obs["bg"] = "#CC3300"
+			return None
+
 		i = self.tree.identify('item',e.x,e.y)
 		chi = int( str(i)[1:] )
 
@@ -117,7 +139,7 @@ class WaterMonitor(tk.Frame,threading.Thread):
 					of = "ON"
 
 				self.tree.set( self.chTree[chi-1], 1, of )
-
+				self.obs["bg"] = "white"
 				break;
 			except Exception as e:
 				hardware = hardware + 1
@@ -144,6 +166,7 @@ class WaterMonitor(tk.Frame,threading.Thread):
 			if not self.stopQuery:
 
 				try:
+					self.notWrite = True
 					inf = self.user.MonitWater()
 					msg = "Nivel d'água na banheira: " + str( inf[0] )
 					self.bathLevel["text"] = msg
@@ -162,13 +185,13 @@ class WaterMonitor(tk.Frame,threading.Thread):
 
 					if self.exit:
 						break
-					time.sleep(5)
 
+					self.notWrite = False
+					time.sleep(5)
 					#print "Monitor da água durmindo.."
 				except Exception as e:
 					pass
 					#print "Exceção na água aguarde outra leitura."
-
 
 			if (not flagFirst) and self.stopQuery:
 				self.hideWidgets()
