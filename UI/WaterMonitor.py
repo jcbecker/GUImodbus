@@ -28,6 +28,7 @@ class WaterMonitor(tk.Frame,threading.Thread):
 		self.yi=self.parent.winfo_y()
 
 		self.notWrite = False
+		self.buildWhiteBack()
 		self.buildLevelLabel()
 		self.buildExhaustBath()
 		self.buildTree()
@@ -152,17 +153,30 @@ class WaterMonitor(tk.Frame,threading.Thread):
 			self.obs["bg"] = "white"
 			self.obs["text"] = "Erro no hardware da torneira."
 
+	def buildWhiteBack(self):
+		self.wb = tk.Label(self.parent, text= " ", bg="white")
+
+		self.wb.place(x=self.xi,
+					  y=self.yi,
+					  width=self.parent["width"],
+					  height=self.parent["height"])
+		self.wbID = self.wb.place_info()
+		self.wb.place_forget()
+		
 	def showWidgets(self):
 		self.bathLevel.place( self.bathID )
 		self.tree.place( self.tID )
 		self.exhaust.place(self.exhaustID)
 		self.obs.place(self.obsID)
+		self.wb.place(self.wbID)
 
 	def hideWidgets(self):
 		self.bathLevel.place_forget()
 		self.exhaust.place_forget()
 		self.tree.place_forget()
 		self.obs.place_forget()
+		self.wb.place_forget()
+
 
 	def run(self):
 		

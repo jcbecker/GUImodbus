@@ -25,6 +25,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 		self.xi=self.parent.winfo_x()
 		self.yi=self.parent.winfo_y()
 
+		self.buildWhiteBack()
 		self.lamp1()
 		self.lamp2()
 		self.lamp3()
@@ -37,6 +38,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 		self.obs1.place_forget()
 		self.obs2.place_forget()
 		self.obs3.place_forget()
+		self.wb.place_forget()
 
 	def showWidgets(self):
 		self.tree1.place(self.t1ID)
@@ -45,6 +47,17 @@ class LampMonitor(tk.Frame, threading.Thread):
 		self.obs1.place(self.obs1ID)
 		self.obs2.place(self.obs2ID)
 		self.obs3.place(self.obs3ID)
+		self.wb.place(self.wbID)
+
+	def buildWhiteBack(self):
+		self.wb = tk.Label(self.parent, text= " ", bg="white")
+
+		self.wb.place(x=self.xi,
+					  y=self.yi,
+					  width=self.parent["width"],
+					  height=self.parent["height"])
+		self.wbID = self.wb.place_info()
+		self.wb.place_forget()
 
 	def buildObs(self):
 		self.obs1 = tk.Label(self.parent, text= " ", bg="white",

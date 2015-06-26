@@ -29,6 +29,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		self.xi=self.parent.winfo_x()
 		self.yi=self.parent.winfo_y()
 
+		self.buildWhiteBack()
 		self.buildTree()
 		self.buildAlarmLabels()
 		self.buildButtons()
@@ -40,6 +41,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		self.ad.place_forget()
 		self.onOff.place_forget()
 		self.obs.place_forget()
+		self.wb.place_forget()
 
 	def showWidgets(self):
 		self.ag.place(self.agID)
@@ -47,6 +49,17 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		self.onOff.place(self.onOffID)
 		self.tree.place(self.tID)
 		self.obs.place(self.obsID)
+		self.wb.place(self.wbID)
+
+	def buildWhiteBack(self):
+		self.wb = tk.Label(self.parent, text= " ", bg="white")
+
+		self.wb.place(x=self.xi,
+					  y=self.yi,
+					  width=self.parent["width"],
+					  height=self.parent["height"])
+		self.wbID = self.wb.place_info()
+		self.wb.place_forget()
 
 	def obsLabel(self):
 

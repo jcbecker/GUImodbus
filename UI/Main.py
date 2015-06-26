@@ -60,11 +60,21 @@ class Main(tk.Tk):
 		self.waterMonitor.exit = True
 		self.tempMonitor.exit = True
 		self.lampMonitor.exit = True
+		if self.alarmMonitor.isAlive():
+			self.alarmMonitor.join(1)
+
+		if self.waterMonitor.isAlive():
+			self.waterMonitor.join(1)
+
+		if self.tempMonitor.isAlive():
+			self.tempMonitor.join(1)
+
+		if self.lampMonitor.isAlive():
+			self.lampMonitor.join(1)
 		self.destroy()
 
 	def stopCurrent(self):
 		if self.showing is not None:
-			print str( self.showing.isAlive())
 			self.showing.hideWidgets()
 			self.showing.stopQuery = True
 
