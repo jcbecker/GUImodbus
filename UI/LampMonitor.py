@@ -158,7 +158,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 					
 					time.sleep(5)
 				except IOError as e:
-					print "Exceção nas lampadas aguarde outra leitura."
+					pass
 
 			if (not flagFirst) and self.stopQuery:
 				self.hideWidgets()			

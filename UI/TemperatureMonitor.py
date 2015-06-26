@@ -71,7 +71,7 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 						if not self.stopQuery:
 							break;
 				except IOError as e:
-					print "Erro na leitura da temperatura espere outra leitura."
+					pass
 
 
 			if (not flagFirst) and self.stopQuery:
