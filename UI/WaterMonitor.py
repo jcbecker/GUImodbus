@@ -42,6 +42,8 @@ class WaterMonitor(tk.Frame,threading.Thread):
 								y=self.yi+310,
 				 				width=500,
 								height=50)
+		self.obsID = self.obs.place_info()
+		self.obs.place_forget()
 
 	def exhaustBath(self):
 
@@ -143,6 +145,7 @@ class WaterMonitor(tk.Frame,threading.Thread):
 			except Exception as e:
 				print str(hardware)
 				hardware = hardware + 1
+				time.sleep(0.5)
 			#print "Exceção na mudança do estado da torneira tente novamente"
 
 		if hardware == 1000:
@@ -153,11 +156,13 @@ class WaterMonitor(tk.Frame,threading.Thread):
 		self.bathLevel.place( self.bathID )
 		self.tree.place( self.tID )
 		self.exhaust.place(self.exhaustID)
+		self.obs.place(self.obsID)
 
 	def hideWidgets(self):
 		self.bathLevel.place_forget()
 		self.exhaust.place_forget()
 		self.tree.place_forget()
+		self.obs.place_forget()
 
 	def run(self):
 		
@@ -187,7 +192,9 @@ class WaterMonitor(tk.Frame,threading.Thread):
 						break
 
 					self.notWrite = False
+				
 					time.sleep(5)
+					
 					#print "Monitor da água durmindo.."
 				except Exception as e:
 					pass

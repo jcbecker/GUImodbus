@@ -1,18 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 
-import tkFont as font
-import Tkinter as tk
-import ttk
-import threading
-import time
-
+from ..IO.ModBusWriter import ModBusWriter
 from TemperatureMonitor import TemperatureMonitor 
 from WaterMonitor import WaterMonitor
 from AlarmMonitor import AlarmMonitor
 from LampMonitor import LampMonitor
 
-from ..IO.ModBusWriter import ModBusWriter
+import tkFont as font
+import Tkinter as tk
+import ttk
+import threading
+import time
 
 class Main(tk.Tk):
 
@@ -41,13 +40,11 @@ class Main(tk.Tk):
 
 		self.line1()
 		self.line2()
-		self.line3()
-		self.line4()
 
 		style = ttk.Style(self)
 		style.configure('Treeview', rowheight=40, font = font.Font(weight="normal",size=16))
 
-		self.actions = tk.Frame(height = self.screenHeight*0.63,width=self.screenWidth,bg="white")
+		self.actions = tk.Frame(height = self.screenHeight*0.75,width=self.screenWidth,bg="white")
 		self.actions.pack(side="bottom", fill="x", expand = False)
 		self.actions.grid_rowconfigure(0,weight=1)		
 		self.actions.grid_columnconfigure(0,weight=1)
@@ -65,15 +62,15 @@ class Main(tk.Tk):
 		self.lampMonitor.exit = True
 		self.destroy()
 
-	def stopCurrentMonitor(self):
+	def stopCurrent(self):
 		if self.showing is not None:
+			print str( self.showing.isAlive())
 			self.showing.hideWidgets()
 			self.showing.stopQuery = True
-			#implementar em todos os monitores.
 
 	def showTempMonitor(self):
 		if self.showing != self.tempMonitor:
-			self.stopCurrentMonitor()
+			self.stopCurrent()
 
 			self.showing = self.tempMonitor
 			self.tempMonitor.stopQuery = False
@@ -82,7 +79,7 @@ class Main(tk.Tk):
 
 	def showLampMonitor(self):
 		if self.showing != self.lampMonitor:
-			self.stopCurrentMonitor()
+			self.stopCurrent()
 
 			self.showing = self.lampMonitor
 			self.lampMonitor.stopQuery = False
@@ -91,7 +88,7 @@ class Main(tk.Tk):
 
 	def showAlarmMonitor(self):
 		if self.showing != self.alarmMonitor:
-			self.stopCurrentMonitor()
+			self.stopCurrent()
 
 			self.showing = self.alarmMonitor
 			self.alarmMonitor.stopQuery = False
@@ -100,7 +97,7 @@ class Main(tk.Tk):
 
 	def showWaterMonitor(self):
 		if self.showing != self.waterMonitor:
-			self.stopCurrentMonitor()
+			self.stopCurrent()
 
 			self.showing = self.waterMonitor
 			self.waterMonitor.stopQuery = False
@@ -108,7 +105,7 @@ class Main(tk.Tk):
 				self.waterMonitor.start()
 
 	def line1(self):
-		self.monitoring = tk.Label(self, text="Monitoramento", bg="white",font=self.labelFont)
+		self.monitoring = tk.Label(self, text="Controle da Casa", bg="white",font=self.labelFont)
 		self.monitoring.place(x=0, 
 							  y=0,
 							  width=self.screenWidth,
@@ -145,34 +142,6 @@ class Main(tk.Tk):
 						 y = self.labelHeight + self.distBetweenLines,
 						 width = self.screenWidth*0.20,
 						 height = self.screenHeight*0.05)			 
-					
-	def line3(self):
-
-		self.commands = tk.Label(self, text="Acionamentos", bg="white", activebackground="white", font = self.labelFont)
-		self.commands.place(x = 0,
-							y = 2*(self.labelHeight + self.distBetweenLines),
-							width = self.screenWidth,
-							height = self.labelHeight)
-					   
-	def line4(self):
-
-		self.waBtn = tk.Button( self, text = "Água", fg="blue", bg="white", activebackground="white",font=self.btnFont)
-		self.waBtn.place(x = self.distBetweenBtnFourthLine,
-						 y = 3*(self.labelHeight + self.distBetweenLines),
-						 width = self.screenWidth*0.20,
-						 height = self.screenHeight*0.05)
-
-		self.aaBtn = tk.Button( self, text = "Alarme", fg="red", bg="white", activebackground="white",font=self.btnFont)
-		self.aaBtn.place(x = self.screenWidth*0.2 + self.distBetweenBtnFourthLine*2,
-						 y = 3*(self.labelHeight + self.distBetweenLines),
-						 width = self.screenWidth*0.20,
-						 height = self.screenHeight*0.05)
-
-		self.iaBtn = tk.Button( self, text = "Iluminação", fg="green", bg="white", activebackground="white",font=self.btnFont)
-		self.iaBtn.place(x = self.screenWidth*0.4 + self.distBetweenBtnFourthLine*3,
-						 y = 3*(self.labelHeight + self.distBetweenLines),
-						 width = self.screenWidth*0.20,
-						 height = self.screenHeight*0.05)
 
 app = Main()
 app.mainloop()

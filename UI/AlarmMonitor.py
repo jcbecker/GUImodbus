@@ -39,12 +39,14 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		self.ag.place_forget()
 		self.ad.place_forget()
 		self.onOff.place_forget()
+		self.obs.place_forget()
 
 	def showWidgets(self):
 		self.ag.place(self.agID)
 		self.ad.place(self.adID)
 		self.onOff.place(self.onOffID)
 		self.tree.place(self.tID)
+		self.obs.place(self.obsID)
 
 	def obsLabel(self):
 
@@ -55,6 +57,9 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 								y=self.yi+460,
 				 				width=500,
 								height=50)
+
+		self.obsID = self.obs.place_info()
+		self.obs.place_forget()
 
 	def buildTree(self):
 		self.tree = ttk.Treeview(self.parent, columns=("Lugar","Estado"),
@@ -113,7 +118,6 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 					self.obs["bg"] = "white"
 				break;
 			except Exception as e:
-				print "puta que pariu"
 				hardware = hardware + 1
 
 		if hardware == 1000:
@@ -143,7 +147,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 		self.ag.place(x=self.xi+400,
 						y=self.yi+50,
 						width=330,
-						height=20)
+						height=30)
 
 		self.agID = self.ag.place_info()
 		self.ag.place_forget()
@@ -208,6 +212,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 
 					self.notWrite = False
 					#print "Monitor do alarme dormindo..."
+					
 					time.sleep(5)
 				except Exception as e:
 					pass

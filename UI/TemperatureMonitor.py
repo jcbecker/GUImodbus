@@ -37,8 +37,8 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 
 		while not self.exit:
 			flagFirst = True
-			if not self.stopQuery:
 
+			if not self.stopQuery:
 				try:	
 					temps = self.user.readTemp()
 					j = 0
@@ -53,7 +53,10 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 					if self.exit:
 						break
 					#print "monitor de temperatura dormindo.."
-					time.sleep(5)
+					for _ in range(5):
+						time.sleep(1)
+						if not self.stopQuery:
+							break;
 				except IOError as e:
 					print "Erro na leitura da temperatura espere outra leitura."
 
