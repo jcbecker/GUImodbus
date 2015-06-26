@@ -6,9 +6,17 @@ from ..IO.ModBusWriter import ModBusWriter
 
 class Lamp:
 
+	reg = []
+
 	def __init__(self):
 		self.reader = ModBusReader()
 		self.writer = ModBusWriter()
+
+		#monitoradores.
+		answer = self.reader.read("000E","0003")
+		self.reg.append( int(answer[7:11],16) )
+		self.reg.append( int(answer[11:15],16) )
+		self.reg.append( int(answer[15:19],16) )
 
 	def monitLamps(self):
 		monitReg = "000B"
@@ -34,19 +42,31 @@ class Lamp:
 		else:
 			return True
 
-	#implementar direito os métodos de leitura
-	#e de escrita.
-	def comLamp1(self,data):
-		Reg = "000E"
-		return self.LampWrite(Reg, data)
+	def switch(self,regID,pw):
 
-	def comLamp2(self,data):
-		Reg = "000F"
-		return self.LampWrite(Reg, data)
+		regIdx = int( regID, 16 ) - 14
+		
+		pw = ( 1 << pw )
+		if ( self.reg[regIdx] & pw ) == 0:
+			status = True
+			regData = self.reg[regIdx] | pw
+		else:
+			status = False
+			regData = ~ pw
+			regData = regData & self.reg[regIdx]
 
-	def comLamp3(self,data):
-		Reg = "0010"
-		return self.LampWrite(Reg, data)
-			
-			
-	
+		copy = regData
+		regData = hex(regData)[2:]
+
+		l = len(regData)
+
+		while l < 4:
+			l = l + 1
+			regData = "0"+regData
+
+		if not self.writer.write(regID,regData.upper()):
+			raise IOError("WriteException")
+
+		self.reg[regIdx] = copy
+
+		return status
