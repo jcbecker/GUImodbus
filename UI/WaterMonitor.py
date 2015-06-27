@@ -14,11 +14,11 @@ from ..IO.ModBusWriter import ModBusWriter
 
 class WaterMonitor(tk.Frame,threading.Thread):
 
-	def __init__(self, parent, controller ):
+	def __init__(self, parent, controller, alarm ):
 		tk.Frame.__init__(self,parent,background = "white")
 		threading.Thread.__init__(self)
 
-		self.user = Water()
+		self.user = Water(alarm)
 		self.parent = parent
 		self.ctrl = controller
 		self.stopQuery = False
@@ -102,9 +102,9 @@ class WaterMonitor(tk.Frame,threading.Thread):
 		self.tree.column("#2", anchor="center", width=120)	
 
 		p = []
-		p.append("Água quenta da banheira")
+		p.append("Água quente da banheira")
 		p.append("Água fria da banheira")
-		p.append("Água quenta da piscina")
+		p.append("Água quente da piscina")
 		p.append("Água fria da piscina")
 
 		for i in range(0,4):

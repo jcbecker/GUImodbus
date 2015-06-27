@@ -6,12 +6,12 @@ from ..IO.ModBusWriter import ModBusWriter
 
 class Water:
 
-	def __init__(self):	
+	def __init__(self,alarm):	
 		self.reader = ModBusReader()
 		self.writer = ModBusWriter()
 
 		answer = self.reader.read("0008","0001")
-		self.regState = int(answer[7:11],16)
+		self.alarmRegState = alarm
 
 	def MonitWater(self):
 		monitReg = "0007"
@@ -38,13 +38,13 @@ class Water:
 		
 		pw = ( 1 << pw )
 
-		if (self.regState & pw ) == 0:
+		if (self.alarmRegState.regState & pw ) == 0:
 			status = True
-			regData = self.regState | pw
+			regData = self.alarmRegState.regState | pw
 		else:
 			status = False
 			regData = ~ pw
-			regData = regData & self.regState 
+			regData = regData & self.alarmRegState.regState 
 		
 		copy = regData
 		regData = hex(regData)[2:]
@@ -58,7 +58,7 @@ class Water:
 		if not self.writer.write (comReg,regData.upper()):
 			raise IOError("WriteException") 
 		
-		self.regState = copy
+		self.alarmRegState.regState = copy
 		#tem que retornar se ta ligada ou
 		#desligada. E não se conseguiu escrever,
 		#se conseguiu escrever ou não quem retorna

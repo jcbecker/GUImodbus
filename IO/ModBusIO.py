@@ -3,7 +3,7 @@ import threading
 
 lock = threading.RLock()
 lock.acquire()
-serialPort = Serial(port = "/dev/pts/17", baudrate = 9600, timeout = 1)
+serialPort = Serial(port = "/dev/pts/11", baudrate = 9600, timeout = 1)
 lock.release()
 
 #nao instancie essa classe.

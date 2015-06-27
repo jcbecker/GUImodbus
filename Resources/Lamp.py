@@ -17,6 +17,27 @@ class Lamp:
 		self.reg.append( int(answer[7:11],16) )
 		self.reg.append( int(answer[11:15],16) )
 		self.reg.append( int(answer[15:19],16) )
+		
+	def initSlave(self):
+		self.hexModBus("000E",0)
+		self.hexModBus("000F",1)
+		self.hexModBus("0010",2)
+	
+	def hexModBus(self, redID, i ):
+	
+		regData = hex(self.reg[i])[2:]
+
+		l = len(regData)
+
+		while l < 4:
+			regData = "0"+regData
+			l = l + 1
+			
+		try:
+			self.writer.write(redID, regData.upper() )
+			return True
+		except Exception as e:
+			return False		
 
 	def monitLamps(self):
 		monitReg = "000B"

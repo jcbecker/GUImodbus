@@ -7,11 +7,13 @@ from WaterMonitor import WaterMonitor
 from AlarmMonitor import AlarmMonitor
 from LampMonitor import LampMonitor
 
+from tkMessageBox import *
 import tkFont as font
 import Tkinter as tk
 import ttk
 import threading
 import time
+import tkFileDialog
 
 class Main(tk.Tk):
 
@@ -50,27 +52,64 @@ class Main(tk.Tk):
 		self.actions.grid_columnconfigure(0,weight=1)
 
 		self.showing = None
+		self.toolBar()
 		self.tempMonitor = TemperatureMonitor(self.actions,self)
-		self.waterMonitor = WaterMonitor(self.actions,self)
 		self.alarmMonitor = AlarmMonitor(self.actions,self)
+		self.waterMonitor = WaterMonitor(self.actions,self,self.alarmMonitor.user)
 		self.lampMonitor = LampMonitor(self.actions,self)
+
+
+	def	 toolBar(self):
+		self.menuBar = tk.Menu(self)
+		
+		self.config(menu=self.menuBar)
+		
+		self.menuBar.add_command(label="Salvar", command=self.save )
+		self.menuBar.add_command(label="Carregar", command=self.load )
+		self.menuBar.add_command(label="Instruções", command=self.instruction )
+		self.menuBar.add_command(label="Fechar", command=self.quit )
+		
+	def save(self):
+		state = "8="+str(self.alarmMonitor.user.regState)+"\n"
+		state = state+"14="+str(self.lampMonitor.user.reg[0])+"\n"
+		state = state+"15="+str(self.lampMonitor.user.reg[1])+"\n"
+		state = state+"16="+str(self.lampMonitor.user.reg[2])
+		
+													#C:\\
+		wFile = tkFileDialog.asksaveasfile(mode='w', initialdir = "/home/", title="Escolha o arquivo",
+											filetypes=[("all files","*.mmj")] )
+		
+		wFile.write(state)
+		
+		wFile.close()
+		
+	def load(self):
+		rFile = tkFileDialog.askopenfile(mode='r',initialdir = "/home/", title="Escolha o arquivo",
+											filetypes=[("all files","*.mmj")])
+			
+		lines = rFile.read().split("\n")
+		self.alarmMonitor.user.regState = int(lines[0].split("=")[1]) 
+		self.alarmMonitor.user.initSlave()
+		
+		self.lampMonitor.user.reg[0] = int(lines[0].split("=")[1]) 
+		self.lampMonitor.user.reg[1] = int(lines[1].split("=")[1])
+		self.lampMonitor.user.reg[2] = int(lines[2].split("=")[1])
+		self.lampMonitor.user.initSlave()
+
+	def instruction(self):
+		showinfo("Instruções", "Clique nas tabelas na área da água ou na área da Iluminação para abrir / fechar uma torneira ou ligar / desligar uma lâmpada. \nSe algum erro ocorrer durante a execução do comando uma linha vermelha aparecerá abaixo da tabela que foi utilizada. Aguarde alguns instantes e tente realizar o comando novamente, se a linha sumir o comando foi executado com sucesso. \n\nObs: A área do alarme e da temperatura não possui as funcionalidades citadas acima.")
 
 	def quit(self):
 		self.alarmMonitor.exit = True
 		self.waterMonitor.exit = True
 		self.tempMonitor.exit = True
 		self.lampMonitor.exit = True
-		if self.alarmMonitor.isAlive():
-			self.alarmMonitor.join(1)
-
-		if self.waterMonitor.isAlive():
-			self.waterMonitor.join(1)
-
-		if self.tempMonitor.isAlive():
-			self.tempMonitor.join(1)
-
-		if self.lampMonitor.isAlive():
-			self.lampMonitor.join(1)
+		
+		self.alarmMonitor.stopQuery = True
+		self.waterMonitor.stopQuery = True
+		self.tempMonitor.stopQuery = True
+		self.lampMonitor.stopQuery = True
+		
 		self.destroy()
 
 	def stopCurrent(self):

@@ -14,7 +14,27 @@ class Alarm:
 
 		answer = self.reader.read("0008","0001")
 		self.regState = int( answer[7:11], 16 )
+		
+	def initSlave(self):
 
+		regData = hex(self.regState)[2:]
+
+		l = len(regData)
+
+		if l == 1:
+			regData = "000"+regData
+		elif l == 2:
+			regData = "00"+regData
+		elif l == 3:
+			regData = "0"+regData
+		
+		try:
+			self.writer.write("0008", regData.upper() )
+			
+			return True
+		except Exception as e:
+			return False
+		
 	#usa o bit 0 do registrador 8 para
 	#ligar ou desligar o alarme da casa
 	#retorna false se o alarme foi desligado
