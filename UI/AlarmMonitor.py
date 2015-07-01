@@ -216,7 +216,7 @@ class AlarmMonitor(tk.Frame,threading.Thread):
 
 						j = j + 1
 
-					if flagFirst:
+					if flagFirst and (not self.stopQuery):
 						flagFirst = False
 						self.showWidgets()
 

@@ -146,7 +146,7 @@ class LampMonitor(tk.Frame, threading.Thread):
 					self.checkState(1,self.tree2,self.chTree2)
 					self.checkState(2,self.tree3,self.chTree3)
 
-					if flagFirst:
+					if flagFirst and (not self.stopQuery):
 						flagFirst = False
 						self.showWidgets()
 

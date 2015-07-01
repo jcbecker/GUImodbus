@@ -59,17 +59,14 @@ class TemperatureMonitor(tk.Frame,threading.Thread):
 						self.tree.set(i,1, str( int(temps[j],16) )+"°C" )
 						j = j + 1
 
-					if flagFirst:
+					if flagFirst and (not self.stopQuery):
 						flagFirst = False
 						self.showWidgets()
 
 					if self.exit:
 						break
 					#print "monitor de temperatura dormindo.."
-					for _ in range(5):
-						time.sleep(1)
-						if not self.stopQuery:
-							break;
+					time.sleep(5)
 				except IOError as e:
 					pass
 

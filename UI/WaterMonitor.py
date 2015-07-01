@@ -198,7 +198,7 @@ class WaterMonitor(tk.Frame,threading.Thread):
 						self.tree.set( i, 1, of )
 						j = j + 1
 
-					if flagFirst:
+					if flagFirst and (not self.stopQuery):
 						flagFirst = False
 						self.showWidgets()
 

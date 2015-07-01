@@ -48,8 +48,8 @@ class Main(tk.Tk):
 
 		self.actions = tk.Frame(height = self.screenHeight*0.75,width=self.screenWidth,bg="white")
 		self.actions.pack(side="bottom", fill="x", expand = False)
-		self.actions.grid_rowconfigure(0,weight=1)		
-		self.actions.grid_columnconfigure(0,weight=1)
+		#self.actions.grid_rowconfigure(0,weight=1)		
+		#self.actions.grid_columnconfigure(0,weight=1)
 
 		self.showing = None
 		self.toolBar()
